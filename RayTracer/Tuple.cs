@@ -36,6 +36,12 @@ namespace RayTracer
             return false;
         }
 
+        public double magnitude()
+        {
+            return Math.Sqrt(this.X * this.X + this.Y * this.Y + this.Z * this.Z + this.W * this.W);
+        }
+
+        // Static operations
         public static Tuple point(double x, double y, double z)
         {
             return new Tuple(x, y, z, 1.0);
@@ -88,6 +94,9 @@ namespace RayTracer
             return a * b;
         }
 
+        public static Tuple operator /(Tuple a, double b)
+        {
+            return a * (1/b);
+        }      
     }
-
 }
