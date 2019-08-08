@@ -248,7 +248,10 @@ namespace RayTracerTestProject
         [TestMethod]
         public void Colors()
         {
-            Assert.IsTrue(true);
+            RayTracer.Color c = new RayTracer.Color(-0.5, 0.4, 1.7);
+            Assert.AreEqual(-0.5, c.r);
+            Assert.AreEqual(0.4, c.g);
+            Assert.AreEqual(1.7, c.b);
         }
     }
 }
