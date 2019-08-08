@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static System.Math;
 using static RayTracer.Tuple;
 using static RayTracer.Canvas;
+using static RayTracer.Color;
 
 namespace RayTracerTestProject
 {
@@ -25,7 +26,7 @@ namespace RayTracerTestProject
         [TestMethod]
         public void TuplePoint()
         {
-            RayTracer.Tuple a = new RayTracer.Tuple(4.3, -4.2, 3.1, 1.0);
+            var a = new RayTracer.Tuple(4.3, -4.2, 3.1, 1.0);
             Assert.AreEqual(4.3, a.X);
             Assert.AreEqual(-4.2, a.Y);
             Assert.AreEqual(3.1, a.Z);
@@ -37,7 +38,7 @@ namespace RayTracerTestProject
         [TestMethod]
         public void TupleVector()
         {
-            RayTracer.Tuple a = new RayTracer.Tuple(4.3, -4.2, 3.1, 0.0);
+            var a = new RayTracer.Tuple(4.3, -4.2, 3.1, 0.0);
             Assert.AreEqual(4.3, a.X);
             Assert.AreEqual(-4.2, a.Y);
             Assert.AreEqual(3.1, a.Z);
@@ -49,42 +50,42 @@ namespace RayTracerTestProject
         [TestMethod]
         public void TuplePointFactory()
         {
-            RayTracer.Tuple point = RayTracer.Tuple.point(4.3, -4.2, 3.1);
-            RayTracer.Tuple tuple = new RayTracer.Tuple(4.3, -4.2, 3.1, 1.0);
-            Assert.IsTrue(areEqual(point, tuple));
+            var p = point(4.3, -4.2, 3.1);
+            var t = new RayTracer.Tuple(4.3, -4.2, 3.1, 1.0);
+            Assert.IsTrue(areEqual(p, t));
         }
 
         [TestMethod]
         public void TupleVectorFactory()
         {
-            RayTracer.Tuple vector = RayTracer.Tuple.vector(4.3, -4.2, 3.1);
-            RayTracer.Tuple tuple = new RayTracer.Tuple(4.3, -4.2, 3.1, 0.0);
-            Assert.IsTrue(areEqual(vector, tuple));
+            var v = vector(4.3, -4.2, 3.1);
+            var t = new RayTracer.Tuple(4.3, -4.2, 3.1, 0.0);
+            Assert.IsTrue(areEqual(v, t));
         }
 
         [TestMethod]
         public void FloatEpsilon()
         {
-            RayTracer.Tuple a = new RayTracer.Tuple(4.3, -4.2, 3.1, 0.0);
-            RayTracer.Tuple r = new RayTracer.Tuple(4.30000001, -4.19999999, 3.1, 0.0);
+            var a = new RayTracer.Tuple(4.3, -4.2, 3.1, 0.0);
+            var r = new RayTracer.Tuple(4.30000001, -4.19999999, 3.1, 0.0);
             Assert.IsTrue(areEqual(r, a));
         }
 
         [TestMethod]
         public void Addition()
         {
-            RayTracer.Tuple a1 = new RayTracer.Tuple(3, -2, 5, 1);
-            RayTracer.Tuple a2 = new RayTracer.Tuple(-2, 3, 1, 0);
-            RayTracer.Tuple r = new RayTracer.Tuple(1, 1, 6, 1);
+            var a1 = new RayTracer.Tuple(3, -2, 5, 1);
+            var a2 = new RayTracer.Tuple(-2, 3, 1, 0);
+            var r = new RayTracer.Tuple(1, 1, 6, 1);
             Assert.IsTrue(areEqual(r, a1 + a2));
         }
 
         [TestMethod]
         public void AddingTwoPointsDoesntGivePoint()
         {
-            RayTracer.Tuple p1 = point(3, -2, 5);
-            RayTracer.Tuple p2 = point(-2, 3, 1);
-            RayTracer.Tuple r = p1 + p2;
+            var p1 = point(3, -2, 5);
+            var p2 = point(-2, 3, 1);
+            var r = p1 + p2;
             Assert.IsFalse(r.isPoint());
             Assert.IsFalse(r.isVector());
         }
@@ -92,68 +93,68 @@ namespace RayTracerTestProject
         [TestMethod]
         public void SubtractPoints()
         {
-            RayTracer.Tuple p1 = point(3, 2, 1);
-            RayTracer.Tuple p2 = point(5, 6, 7);
-            RayTracer.Tuple r = vector(-2, -4, -6);
+            var p1 = point(3, 2, 1);
+            var p2 = point(5, 6, 7);
+            var r = vector(-2, -4, -6);
             Assert.IsTrue(areEqual(r, p1 - p2));
         }
 
         [TestMethod]
         public void SubtractVectorAndPoint()
         {
-            RayTracer.Tuple p = point(3, 2, 1);
-            RayTracer.Tuple v = vector(5, 6, 7);
-            RayTracer.Tuple r = point(-2, -4, -6);
+            var p = point(3, 2, 1);
+            var v = vector(5, 6, 7);
+            var r = point(-2, -4, -6);
             Assert.IsTrue(areEqual(r, p - v));
         }
 
         [TestMethod]
         public void SubtractVectors()
         {
-            RayTracer.Tuple v1 = vector(3, 2, 1);
-            RayTracer.Tuple v2 = vector(5, 6, 7);
-            RayTracer.Tuple r = vector(-2, -4, -6);
+            var v1 = vector(3, 2, 1);
+            var v2 = vector(5, 6, 7);
+            var r = vector(-2, -4, -6);
             Assert.IsTrue(areEqual(r, v1 - v2));
         }
 
         [TestMethod]
         public void SubtractZeroVector()
         {
-            RayTracer.Tuple zero = vector(0, 0, 0);
-            RayTracer.Tuple v = vector(1, -2, 3);
-            RayTracer.Tuple r = vector(-1, 2, -3);
+            var zero = vector(0, 0, 0);
+            var v = vector(1, -2, 3);
+            var r = vector(-1, 2, -3);
             Assert.IsTrue(areEqual(r, zero - v));
         }
 
         [TestMethod]
         public void NegateTuple()
         {
-            RayTracer.Tuple a = new RayTracer.Tuple(1, -2, 3, -4);
-            RayTracer.Tuple r = new RayTracer.Tuple(-1, 2, -3, 4);
+            var a = new RayTracer.Tuple(1, -2, 3, -4);
+            var r = new RayTracer.Tuple(-1, 2, -3, 4);
             Assert.IsTrue(areEqual(r, !a));
         }
 
         [TestMethod]
         public void ScalarMultiplicationTuple()
         {
-            RayTracer.Tuple a = new RayTracer.Tuple(1, -2, 3, -4);
-            RayTracer.Tuple r = new RayTracer.Tuple(3.5, -7, 10.5, -14);
+            var a = new RayTracer.Tuple(1, -2, 3, -4);
+            var r = new RayTracer.Tuple(3.5, -7, 10.5, -14);
             Assert.IsTrue(areEqual(r, 3.5 * a));
         }
 
         [TestMethod]
         public void ScalarFractionMultiplicationTuple()
         {
-            RayTracer.Tuple a = new RayTracer.Tuple(1, -2, 3, -4);
-            RayTracer.Tuple r = new RayTracer.Tuple(0.5, -1, 1.5, -2);
+            var a = new RayTracer.Tuple(1, -2, 3, -4);
+            var r = new RayTracer.Tuple(0.5, -1, 1.5, -2);
             Assert.IsTrue(areEqual(r, 0.5 * a));
         }
 
         [TestMethod]
         public void ScalarDivisionTuple()
         {
-            RayTracer.Tuple a = new RayTracer.Tuple(1, -2, 3, -4);
-            RayTracer.Tuple r = new RayTracer.Tuple(0.5, -1, 1.5, -2);
+            var a = new RayTracer.Tuple(1, -2, 3, -4);
+            var r = new RayTracer.Tuple(0.5, -1, 1.5, -2);
             Assert.IsTrue(areEqual(r, a/2));
         }
 
@@ -191,18 +192,18 @@ namespace RayTracerTestProject
         [TestMethod]
         public void VectorDot()
         {
-            RayTracer.Tuple a = vector(1, 2, 3);
-            RayTracer.Tuple b = vector(2, 3, 4);
+            var a = vector(1, 2, 3);
+            var b = vector(2, 3, 4);
             Assert.AreEqual(20, dot(a,b));
         }
 
         [TestMethod]
         public void VectorCross()
         {
-            RayTracer.Tuple a = vector(1, 2, 3);
-            RayTracer.Tuple b = vector(2, 3, 4);
-            RayTracer.Tuple r1 = vector(-1, 2, -1);
-            RayTracer.Tuple r2 = vector(1, -2, 1);
+            var a = vector(1, 2, 3);
+            var b = vector(2, 3, 4);
+            var r1 = vector(-1, 2, -1);
+            var r2 = vector(1, -2, 1);
 
             Assert.IsTrue(areEqual(r1, cross(a, b)));
             Assert.IsTrue(areEqual(r2, cross(b, a)));
@@ -211,8 +212,8 @@ namespace RayTracerTestProject
         [TestMethod]
         public void FireProjectile()
         {
-            RayTracer.Tuple v = vector(1, 2, 3);
-            RayTracer.Tuple p = point(1, 2, 3);
+            var v = vector(1, 2, 3);
+            var p = point(1, 2, 3);
 
             projectile proj;
             proj.position = point(0,1,0);
@@ -249,7 +250,7 @@ namespace RayTracerTestProject
         [TestMethod]
         public void Colors()
         {
-            var c = new RayTracer.Color(-0.5, 0.4, 1.7);
+            var c = color(-0.5, 0.4, 1.7);
             Assert.AreEqual(-0.5, c.r);
             Assert.AreEqual(0.4, c.g);
             Assert.AreEqual(1.7, c.b);
@@ -258,35 +259,35 @@ namespace RayTracerTestProject
         [TestMethod]
         public void AddColors()
         {
-            var c1 = new RayTracer.Color(0.9, 0.6, 0.75);
-            var c2 = new RayTracer.Color(0.7, 0.1, 0.25);
-            var r = new RayTracer.Color(1.6, 0.7, 1);
+            var c1 = color(0.9, 0.6, 0.75);
+            var c2 = color(0.7, 0.1, 0.25);
+            var r = color(1.6, 0.7, 1);
             Assert.IsTrue(areEqual(r, c1 + c2));
         }
 
         [TestMethod]
         public void SubtractColors()
         {
-            var c1 = new RayTracer.Color(0.9, 0.6, 0.75);
-            var c2 = new RayTracer.Color(0.7, 0.1, 0.25);
-            var r = new RayTracer.Color(0.2, 0.5, 0.5);
+            var c1 = color(0.9, 0.6, 0.75);
+            var c2 = color(0.7, 0.1, 0.25);
+            var r = color(0.2, 0.5, 0.5);
             Assert.IsTrue(areEqual(r, c1 - c2));
         }
 
         [TestMethod]
         public void ScalarMultiplyColors()
         {
-            var c = new RayTracer.Color(0.2, 0.3, 0.4);
-            var r = new RayTracer.Color(0.4, 0.6, 0.8);
+            var c = color(0.2, 0.3, 0.4);
+            var r = color(0.4, 0.6, 0.8);
             Assert.IsTrue(areEqual(r, c * 2));
         }
 
         [TestMethod]
         public void MultiplyColors()
         {
-            var c1 = new RayTracer.Color(1, 0.2, 0.4);
-            var c2 = new RayTracer.Color(0.9, 1, 0.1);
-            var r = new RayTracer.Color(0.9, 0.2, 0.04);
+            var c1 = color(1, 0.2, 0.4);
+            var c2 = color(0.9, 1, 0.1);
+            var r = color(0.9, 0.2, 0.04);
             Assert.IsTrue(areEqual(r, c1 * c2));
         }
 
@@ -294,7 +295,7 @@ namespace RayTracerTestProject
         public void Canvas()
         {
             var c = new RayTracer.Canvas(10, 20);
-            var black = new RayTracer.Color(0, 0, 0);
+            var black = color(0, 0, 0);
             Assert.AreEqual(10, c.width);
             Assert.AreEqual(20, c.height);
 
@@ -302,7 +303,7 @@ namespace RayTracerTestProject
             {
                 for (int j = 0; j < 20; j++)
                 {
-                    Assert.IsTrue(areEqual(black, RayTracer.Canvas.pixel_at(c, i, j)));
+                    Assert.IsTrue(areEqual(black, pixel_at(c, i, j)));
                 }
             }
         }
@@ -311,9 +312,9 @@ namespace RayTracerTestProject
         public void WritePixel()
         {
             var c = new RayTracer.Canvas(10, 20);
-            var red = new RayTracer.Color(1, 0, 0);
+            var red = color(1, 0, 0);
             write_pixel(c, 2, 3, red);
-            Assert.IsTrue(areEqual(red, RayTracer.Canvas.pixel_at(c, 2, 3)));            
+            Assert.IsTrue(areEqual(red, pixel_at(c, 2, 3)));            
         }
 
         [TestMethod]
@@ -326,6 +327,48 @@ namespace RayTracerTestProject
             string r1 = "P3";
             string r2 = "5 3";
             string r3 = "255";
+            Assert.AreEqual(r1, reader.ReadLine());
+            Assert.AreEqual(r2, reader.ReadLine());
+            Assert.AreEqual(r3, reader.ReadLine());
+        }
+
+        [TestMethod]
+        public void ColorInt()
+        {
+            var c = color(1, 0.5, 1.5);
+            Assert.AreEqual(255, c.rI);
+            Assert.AreEqual(128, c.gI);
+            Assert.AreEqual(255, c.bI);
+
+            c = color(-1, -2.5, 1.5);
+            Assert.AreEqual(0, c.rI);
+            Assert.AreEqual(0, c.gI);
+            Assert.AreEqual(255, c.bI);
+        }
+
+
+        [TestMethod]
+        public void PPMData()
+        {
+
+            var c = new RayTracer.Canvas(5, 3);
+            var c1 = color(1.5, 0, 0);
+            var c2 = color(0, 0.5, 0);
+            var c3 = color(-0.5, 0, 1);
+
+            write_pixel(c, 0, 0, c1);
+            write_pixel(c, 2, 1, c2);
+            write_pixel(c, 4, 2, c3);
+
+            string s = canvas_to_ppm(c);
+            var reader = new System.IO.StringReader(s);
+
+            //skim header
+            reader.ReadLine(); reader.ReadLine(); reader.ReadLine();
+
+            string r1 = "255 0 0 0 0 0 0 0 0 0 0 0 0 0 0";
+            string r2 = "0 0 0 0 0 0 0 128 0 0 0 0 0 0 0";
+            string r3 = "0 0 0 0 0 0 0 0 0 0 0 0 0 0 255";
             Assert.AreEqual(r1, reader.ReadLine());
             Assert.AreEqual(r2, reader.ReadLine());
             Assert.AreEqual(r3, reader.ReadLine());

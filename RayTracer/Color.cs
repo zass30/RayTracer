@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Math;
 
 namespace RayTracer
 {
@@ -46,6 +47,41 @@ namespace RayTracer
             {
                 Z = value;
             }
+        }
+
+        public double rI
+        {
+            get
+            {
+                return toi(r);
+            }
+        }
+
+        public double gI
+        {
+            get
+            {
+                return toi(g);
+            }
+        }
+
+        public double bI
+        {
+            get
+            {
+                return toi(b);
+            }
+        }
+
+        private int toi(double x)
+        {
+            return Max(0,Min((int)Math.Round(x * 255), 255));
+        }
+
+        // factory class for consistency
+        public static Color color(double r, double g, double b)
+        {
+            return new Color(r, g, b);
         }
 
         public static Color operator *(Color a, Color b)

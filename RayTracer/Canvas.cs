@@ -40,6 +40,16 @@ namespace RayTracer
         {
             string s = "P3\n";
             s += c.width + " " + c.height + "\n255\n";
+            for (int j = 0; j < c.height; j++)
+            {
+                for (int i = 0; i < c.width; i++)
+                {
+                    var color = c.pixels[i, j];
+                    s += color.rI + " " + color.gI + " " + color.bI + " ";
+                }
+                s = s.Trim();
+                s += "\n";
+            }
             return s;
         }
     }
