@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RayTracer", "RayTracer\RayTracer.csproj", "{7495A662-2C49-4ABB-8CD9-0D95FCCA9525}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RayTracerTestProject", "RayTracerTestProject\RayTracerTestProject.csproj", "{799ECB8B-7DB3-478B-8EC2-96D97E7ABA44}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM = Debug|ARM
@@ -41,6 +43,30 @@ Global
 		{7495A662-2C49-4ABB-8CD9-0D95FCCA9525}.Release|x86.ActiveCfg = Release|x86
 		{7495A662-2C49-4ABB-8CD9-0D95FCCA9525}.Release|x86.Build.0 = Release|x86
 		{7495A662-2C49-4ABB-8CD9-0D95FCCA9525}.Release|x86.Deploy.0 = Release|x86
+		{799ECB8B-7DB3-478B-8EC2-96D97E7ABA44}.Debug|ARM.ActiveCfg = Debug|ARM
+		{799ECB8B-7DB3-478B-8EC2-96D97E7ABA44}.Debug|ARM.Build.0 = Debug|ARM
+		{799ECB8B-7DB3-478B-8EC2-96D97E7ABA44}.Debug|ARM.Deploy.0 = Debug|ARM
+		{799ECB8B-7DB3-478B-8EC2-96D97E7ABA44}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{799ECB8B-7DB3-478B-8EC2-96D97E7ABA44}.Debug|ARM64.Build.0 = Debug|ARM64
+		{799ECB8B-7DB3-478B-8EC2-96D97E7ABA44}.Debug|ARM64.Deploy.0 = Debug|ARM64
+		{799ECB8B-7DB3-478B-8EC2-96D97E7ABA44}.Debug|x64.ActiveCfg = Debug|x64
+		{799ECB8B-7DB3-478B-8EC2-96D97E7ABA44}.Debug|x64.Build.0 = Debug|x64
+		{799ECB8B-7DB3-478B-8EC2-96D97E7ABA44}.Debug|x64.Deploy.0 = Debug|x64
+		{799ECB8B-7DB3-478B-8EC2-96D97E7ABA44}.Debug|x86.ActiveCfg = Debug|x86
+		{799ECB8B-7DB3-478B-8EC2-96D97E7ABA44}.Debug|x86.Build.0 = Debug|x86
+		{799ECB8B-7DB3-478B-8EC2-96D97E7ABA44}.Debug|x86.Deploy.0 = Debug|x86
+		{799ECB8B-7DB3-478B-8EC2-96D97E7ABA44}.Release|ARM.ActiveCfg = Release|ARM
+		{799ECB8B-7DB3-478B-8EC2-96D97E7ABA44}.Release|ARM.Build.0 = Release|ARM
+		{799ECB8B-7DB3-478B-8EC2-96D97E7ABA44}.Release|ARM.Deploy.0 = Release|ARM
+		{799ECB8B-7DB3-478B-8EC2-96D97E7ABA44}.Release|ARM64.ActiveCfg = Release|ARM64
+		{799ECB8B-7DB3-478B-8EC2-96D97E7ABA44}.Release|ARM64.Build.0 = Release|ARM64
+		{799ECB8B-7DB3-478B-8EC2-96D97E7ABA44}.Release|ARM64.Deploy.0 = Release|ARM64
+		{799ECB8B-7DB3-478B-8EC2-96D97E7ABA44}.Release|x64.ActiveCfg = Release|x64
+		{799ECB8B-7DB3-478B-8EC2-96D97E7ABA44}.Release|x64.Build.0 = Release|x64
+		{799ECB8B-7DB3-478B-8EC2-96D97E7ABA44}.Release|x64.Deploy.0 = Release|x64
+		{799ECB8B-7DB3-478B-8EC2-96D97E7ABA44}.Release|x86.ActiveCfg = Release|x86
+		{799ECB8B-7DB3-478B-8EC2-96D97E7ABA44}.Release|x86.Build.0 = Release|x86
+		{799ECB8B-7DB3-478B-8EC2-96D97E7ABA44}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
