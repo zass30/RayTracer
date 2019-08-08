@@ -277,7 +277,7 @@ namespace RayTracerTestProject
         {
             var c = new RayTracer.Color(0.2, 0.3, 0.4);
             var r = new RayTracer.Color(0.4, 0.6, 0.8);
-            Assert.IsTrue(areEqual(r, c*2));
+            Assert.IsTrue(areEqual(r, c * 2));
         }
 
         [TestMethod]
@@ -287,6 +287,32 @@ namespace RayTracerTestProject
             var c2 = new RayTracer.Color(0.9, 1, 0.1);
             var r = new RayTracer.Color(0.9, 0.2, 0.04);
             Assert.IsTrue(areEqual(r, c1 * c2));
+        }
+
+        [TestMethod]
+        public void Canvas()
+        {
+            var c = new RayTracer.Canvas(10, 20);
+            var black = new RayTracer.Color(0, 0, 0);
+            Assert.AreEqual(10, c.width);
+            Assert.AreEqual(20, c.height);
+
+            for (int i = 0; i < 10; i++)
+            {
+                for (int j = 0; j < 20; j++)
+                {
+                    Assert.IsTrue(areEqual(black, RayTracer.Canvas.pixel_at(c, i, j)));
+                }
+            }
+        }
+
+        [TestMethod]
+        public void WritePixel()
+        {
+            var c = new RayTracer.Canvas(10, 20);
+            var red = new RayTracer.Color(1, 0, 0);
+            RayTracer.Canvas.write_pixel(c, 2, 3, red);
+            Assert.IsTrue(areEqual(red, RayTracer.Canvas.pixel_at(c, 2, 3)));            
         }
     }
 }
