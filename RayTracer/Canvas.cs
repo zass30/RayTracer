@@ -35,5 +35,12 @@ namespace RayTracer
         {
             c.pixels[x, y] = color;
         }
+
+        public static string canvas_to_ppm(Canvas c)
+        {
+            string s = "P3\n";
+            s += c.width + " " + c.height + "\n255\n";
+            return s;
+        }
     }
 }

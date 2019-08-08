@@ -3,6 +3,7 @@ using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static System.Math;
 using static RayTracer.Tuple;
+using static RayTracer.Canvas;
 
 namespace RayTracerTestProject
 {
@@ -311,8 +312,23 @@ namespace RayTracerTestProject
         {
             var c = new RayTracer.Canvas(10, 20);
             var red = new RayTracer.Color(1, 0, 0);
-            RayTracer.Canvas.write_pixel(c, 2, 3, red);
+            write_pixel(c, 2, 3, red);
             Assert.IsTrue(areEqual(red, RayTracer.Canvas.pixel_at(c, 2, 3)));            
+        }
+
+        [TestMethod]
+        public void PPMHeader()
+        {
+
+            var c = new RayTracer.Canvas(5, 3);
+            string s = canvas_to_ppm(c);
+            var reader = new System.IO.StringReader(s);
+            string r1 = "P3";
+            string r2 = "5 3";
+            string r3 = "255";
+            Assert.AreEqual(r1, reader.ReadLine());
+            Assert.AreEqual(r2, reader.ReadLine());
+            Assert.AreEqual(r3, reader.ReadLine());
         }
     }
 }
