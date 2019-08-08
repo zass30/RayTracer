@@ -248,10 +248,45 @@ namespace RayTracerTestProject
         [TestMethod]
         public void Colors()
         {
-            RayTracer.Color c = new RayTracer.Color(-0.5, 0.4, 1.7);
+            var c = new RayTracer.Color(-0.5, 0.4, 1.7);
             Assert.AreEqual(-0.5, c.r);
             Assert.AreEqual(0.4, c.g);
             Assert.AreEqual(1.7, c.b);
+        }
+
+        [TestMethod]
+        public void AddColors()
+        {
+            var c1 = new RayTracer.Color(0.9, 0.6, 0.75);
+            var c2 = new RayTracer.Color(0.7, 0.1, 0.25);
+            var r = new RayTracer.Color(1.6, 0.7, 1);
+            Assert.IsTrue(areEqual(r, c1 + c2));
+        }
+
+        [TestMethod]
+        public void SubtractColors()
+        {
+            var c1 = new RayTracer.Color(0.9, 0.6, 0.75);
+            var c2 = new RayTracer.Color(0.7, 0.1, 0.25);
+            var r = new RayTracer.Color(0.2, 0.5, 0.5);
+            Assert.IsTrue(areEqual(r, c1 - c2));
+        }
+
+        [TestMethod]
+        public void ScalarMultiplyColors()
+        {
+            var c = new RayTracer.Color(0.2, 0.3, 0.4);
+            var r = new RayTracer.Color(0.4, 0.6, 0.8);
+            Assert.IsTrue(areEqual(r, c*2));
+        }
+
+        [TestMethod]
+        public void MultiplyColors()
+        {
+            var c1 = new RayTracer.Color(1, 0.2, 0.4);
+            var c2 = new RayTracer.Color(0.9, 1, 0.1);
+            var r = new RayTracer.Color(0.9, 0.2, 0.04);
+            Assert.IsTrue(areEqual(r, c1 * c2));
         }
     }
 }

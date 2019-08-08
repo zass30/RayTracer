@@ -47,5 +47,10 @@ namespace RayTracer
                 Z = value;
             }
         }
+
+        public static Color operator *(Color a, Color b)
+        {
+            return new Color(a.r * b.r, a.g * b.g, a.b * b.b);
+        }
     }
 }
