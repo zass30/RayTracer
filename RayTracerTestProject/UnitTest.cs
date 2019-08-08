@@ -1,7 +1,8 @@
 ﻿
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RayTracer;
+using static System.Math;
+using static RayTracer.Tuple;
 
 namespace RayTracerTestProject
 {
@@ -37,7 +38,7 @@ namespace RayTracerTestProject
         {
             RayTracer.Tuple point = RayTracer.Tuple.point(4.3, -4.2, 3.1);
             RayTracer.Tuple tuple = new RayTracer.Tuple(4.3, -4.2, 3.1, 1.0);
-            Assert.IsTrue(RayTracer.Tuple.areEqual(point, tuple));
+            Assert.IsTrue(areEqual(point, tuple));
         }
 
         [TestMethod]
@@ -45,15 +46,15 @@ namespace RayTracerTestProject
         {
             RayTracer.Tuple vector = RayTracer.Tuple.vector(4.3, -4.2, 3.1);
             RayTracer.Tuple tuple = new RayTracer.Tuple(4.3, -4.2, 3.1, 0.0);
-            Assert.IsTrue(RayTracer.Tuple.areEqual(vector, tuple));
+            Assert.IsTrue(areEqual(vector, tuple));
         }
 
         [TestMethod]
         public void FloatEpsilon()
         {
             RayTracer.Tuple a = new RayTracer.Tuple(4.3, -4.2, 3.1, 0.0);
-            RayTracer.Tuple b = new RayTracer.Tuple(4.30000001, -4.19999999, 3.1, 0.0);
-            Assert.IsTrue(RayTracer.Tuple.areEqual(a, b));
+            RayTracer.Tuple r = new RayTracer.Tuple(4.30000001, -4.19999999, 3.1, 0.0);
+            Assert.IsTrue(areEqual(r, a));
         }
 
         [TestMethod]
@@ -62,14 +63,14 @@ namespace RayTracerTestProject
             RayTracer.Tuple a1 = new RayTracer.Tuple(3, -2, 5, 1);
             RayTracer.Tuple a2 = new RayTracer.Tuple(-2, 3, 1, 0);
             RayTracer.Tuple r = new RayTracer.Tuple(1, 1, 6, 1);
-            Assert.IsTrue(RayTracer.Tuple.areEqual(a1+a2, r));
+            Assert.IsTrue(areEqual(r, a1 + a2));
         }
 
         [TestMethod]
         public void AddingTwoPointsDoesntGivePoint()
         {
-            RayTracer.Tuple p1 = RayTracer.Tuple.point(3, -2, 5);
-            RayTracer.Tuple p2 = RayTracer.Tuple.point(-2, 3, 1);
+            RayTracer.Tuple p1 = point(3, -2, 5);
+            RayTracer.Tuple p2 = point(-2, 3, 1);
             RayTracer.Tuple r = p1 + p2;
             Assert.IsFalse(r.isPoint());
             Assert.IsFalse(r.isVector());
@@ -78,37 +79,37 @@ namespace RayTracerTestProject
         [TestMethod]
         public void SubtractPoints()
         {
-            RayTracer.Tuple p1 = RayTracer.Tuple.point(3, 2, 1);
-            RayTracer.Tuple p2 = RayTracer.Tuple.point(5, 6, 7);
-            RayTracer.Tuple r = RayTracer.Tuple.vector(-2, -4, -6);
-            Assert.IsTrue(RayTracer.Tuple.areEqual(p1 - p2, r));
+            RayTracer.Tuple p1 = point(3, 2, 1);
+            RayTracer.Tuple p2 = point(5, 6, 7);
+            RayTracer.Tuple r = vector(-2, -4, -6);
+            Assert.IsTrue(areEqual(r, p1 - p2));
         }
 
         [TestMethod]
         public void SubtractVectorAndPoint()
         {
-            RayTracer.Tuple p = RayTracer.Tuple.point(3, 2, 1);
-            RayTracer.Tuple v = RayTracer.Tuple.vector(5, 6, 7);
-            RayTracer.Tuple r = RayTracer.Tuple.point(-2, -4, -6);
-            Assert.IsTrue(RayTracer.Tuple.areEqual(p - v, r));
+            RayTracer.Tuple p = point(3, 2, 1);
+            RayTracer.Tuple v = vector(5, 6, 7);
+            RayTracer.Tuple r = point(-2, -4, -6);
+            Assert.IsTrue(areEqual(r, p - v));
         }
 
         [TestMethod]
         public void SubtractVectors()
         {
-            RayTracer.Tuple v1 = RayTracer.Tuple.vector(3, 2, 1);
-            RayTracer.Tuple v2 = RayTracer.Tuple.vector(5, 6, 7);
-            RayTracer.Tuple r = RayTracer.Tuple.vector(-2, -4, -6);
-            Assert.IsTrue(RayTracer.Tuple.areEqual(v1 - v2, r));
+            RayTracer.Tuple v1 = vector(3, 2, 1);
+            RayTracer.Tuple v2 = vector(5, 6, 7);
+            RayTracer.Tuple r = vector(-2, -4, -6);
+            Assert.IsTrue(areEqual(r, v1 - v2));
         }
 
         [TestMethod]
         public void SubtractZeroVector()
         {
-            RayTracer.Tuple zero = RayTracer.Tuple.vector(0, 0, 0);
-            RayTracer.Tuple v = RayTracer.Tuple.vector(1, -2, 3);
-            RayTracer.Tuple r = RayTracer.Tuple.vector(-1, 2, -3);
-            Assert.IsTrue(RayTracer.Tuple.areEqual(zero - v, r));
+            RayTracer.Tuple zero = vector(0, 0, 0);
+            RayTracer.Tuple v = vector(1, -2, 3);
+            RayTracer.Tuple r = vector(-1, 2, -3);
+            Assert.IsTrue(areEqual(r, zero - v));
         }
 
         [TestMethod]
@@ -116,7 +117,7 @@ namespace RayTracerTestProject
         {
             RayTracer.Tuple a = new RayTracer.Tuple(1, -2, 3, -4);
             RayTracer.Tuple r = new RayTracer.Tuple(-1, 2, -3, 4);
-            Assert.IsTrue(RayTracer.Tuple.areEqual(!a, r));
+            Assert.IsTrue(areEqual(r, !a));
         }
 
         [TestMethod]
@@ -124,7 +125,7 @@ namespace RayTracerTestProject
         {
             RayTracer.Tuple a = new RayTracer.Tuple(1, -2, 3, -4);
             RayTracer.Tuple r = new RayTracer.Tuple(3.5, -7, 10.5, -14);
-            Assert.IsTrue(RayTracer.Tuple.areEqual(3.5 * a, r));
+            Assert.IsTrue(areEqual(r, 3.5 * a));
         }
 
         [TestMethod]
@@ -132,7 +133,7 @@ namespace RayTracerTestProject
         {
             RayTracer.Tuple a = new RayTracer.Tuple(1, -2, 3, -4);
             RayTracer.Tuple r = new RayTracer.Tuple(0.5, -1, 1.5, -2);
-            Assert.IsTrue(RayTracer.Tuple.areEqual(0.5 * a, r));
+            Assert.IsTrue(areEqual(r, 0.5 * a));
         }
 
         [TestMethod]
@@ -140,23 +141,58 @@ namespace RayTracerTestProject
         {
             RayTracer.Tuple a = new RayTracer.Tuple(1, -2, 3, -4);
             RayTracer.Tuple r = new RayTracer.Tuple(0.5, -1, 1.5, -2);
-            Assert.IsTrue(RayTracer.Tuple.areEqual(a/2, r));
+            Assert.IsTrue(areEqual(r, a/2));
         }
 
         [TestMethod]
         public void VectorMagnitude()
         {
             RayTracer.Tuple v;
-            v = RayTracer.Tuple.vector(1, 0, 0);
-            Assert.AreEqual(v.magnitude(), 1);
-            v = RayTracer.Tuple.vector(0, 1, 0);
-            Assert.AreEqual(v.magnitude(), 1);
-            v = RayTracer.Tuple.vector(0, 0, 1);
-            Assert.AreEqual(v.magnitude(), 1);
-            v = RayTracer.Tuple.vector(1, 2, 3);
-            Assert.AreEqual(v.magnitude(), Math.Sqrt(14));
-            v = RayTracer.Tuple.vector(-1, -2, -3);
-            Assert.AreEqual(v.magnitude(), Math.Sqrt(14));
+            v = vector(1, 0, 0);
+            Assert.AreEqual(1, v.magnitude());
+            v = vector(0, 1, 0);
+            Assert.AreEqual(1, v.magnitude());
+            v = vector(0, 0, 1);
+            Assert.AreEqual(1, v.magnitude());
+            v = vector(1, 2, 3);
+            Assert.AreEqual(Sqrt(14), v.magnitude());
+            v = vector(-1, -2, -3);
+            Assert.AreEqual(Sqrt(14), v.magnitude());
+        }
+
+        [TestMethod]
+        public void VectorNormalize()
+        {
+            RayTracer.Tuple v, n, r;
+            v = vector(4, 0, 0);
+            n = normalize(v);
+            r = vector(1, 0, 0);
+            Assert.IsTrue(areEqual(r, n));
+
+            v = vector(1, 2, 3);
+            n = normalize(v);
+            r = vector(1/Sqrt(14), 2/Sqrt(14), 3/ Sqrt(14));
+            Assert.IsTrue(areEqual(r, n));
+        }
+
+        [TestMethod]
+        public void VectorDot()
+        {
+            RayTracer.Tuple a = vector(1, 2, 3);
+            RayTracer.Tuple b = vector(2, 3, 4);
+            Assert.AreEqual(20, dot(a,b));
+        }
+
+        [TestMethod]
+        public void VectorCross()
+        {
+            RayTracer.Tuple a = vector(1, 2, 3);
+            RayTracer.Tuple b = vector(2, 3, 4);
+            RayTracer.Tuple r1 = vector(-1, 2, -1);
+            RayTracer.Tuple r2 = vector(1, -2, 1);
+
+            Assert.IsTrue(areEqual(r1, cross(a, b)));
+            Assert.IsTrue(areEqual(r2, cross(b, a)));
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Math;
 
 namespace RayTracer
 {
@@ -38,7 +39,7 @@ namespace RayTracer
 
         public double magnitude()
         {
-            return Math.Sqrt(this.X * this.X + this.Y * this.Y + this.Z * this.Z + this.W * this.W);
+            return Sqrt(this.X * this.X + this.Y * this.Y + this.Z * this.Z + this.W * this.W);
         }
 
         // Static operations
@@ -64,7 +65,7 @@ namespace RayTracer
 
         private static bool areClose(double a, double b)
         {
-            if (Math.Abs(a-b) < epsilon)
+            if (Math.Abs(a - b) < epsilon)
                 return true;
             return false;
         }
@@ -84,19 +85,42 @@ namespace RayTracer
             return a * -1;
         }
 
-        public static Tuple operator*(Tuple a, double b)
+        public static Tuple operator *(Tuple a, double b)
         {
             return new Tuple(a.X * b, a.Y * b, a.Z * b, a.W * b);
         }
 
-        public static Tuple operator*(double b, Tuple a)
+        public static Tuple operator *(double b, Tuple a)
         {
             return a * b;
         }
 
         public static Tuple operator /(Tuple a, double b)
         {
-            return a * (1/b);
-        }      
+            return a * (1 / b);
+        }
+
+        public static Tuple normalize(Tuple a)
+        {
+            return a / a.magnitude();
+        }
+
+        public static double dot(Tuple a, Tuple b)
+        {
+            return
+                a.X * b.X +
+                a.Y * b.Y +
+                a.Z * b.Z +
+                a.W * b.W;
+        }
+
+        public static Tuple cross(Tuple a, Tuple b)
+        {
+            return vector(
+                a.Y * b.Z - a.Z * b.Y,
+                a.Z * b.X - a.X * b.Z,
+                a.X * b.Y - a.Y * b.X
+                );
+        }
     }
 }
