@@ -7,8 +7,20 @@ using static RayTracer.Tuple;
 namespace RayTracerTestProject
 {
     [TestClass]
-    public class TupleUnitTest
+    public class Chapter1UnitTests
     {
+        struct projectile
+        {
+            public RayTracer.Tuple position;
+            public RayTracer.Tuple velocity;
+        }
+
+        struct environment
+        {
+            public RayTracer.Tuple gravity;
+            public RayTracer.Tuple wind;
+        }
+
         [TestMethod]
         public void TuplePoint()
         {
@@ -193,6 +205,50 @@ namespace RayTracerTestProject
 
             Assert.IsTrue(areEqual(r1, cross(a, b)));
             Assert.IsTrue(areEqual(r2, cross(b, a)));
+        }
+
+        [TestMethod]
+        public void FireProjectile()
+        {
+            RayTracer.Tuple v = vector(1, 2, 3);
+            RayTracer.Tuple p = point(1, 2, 3);
+
+            projectile proj;
+            proj.position = point(0,1,0);
+            proj.velocity = normalize(vector(1,1,0));
+
+            environment env;
+            env.gravity = vector(0,-0.1, 0);
+            env.wind = vector(-0.01,0,0);
+
+            int i = 1;
+            while (proj.position.Y > 0)
+            {
+                System.Diagnostics.Debug.WriteLine("i: ", i, "Y: ", proj.position.Y);
+                proj = tick(proj, env);
+                i++;
+            }
+
+            Assert.AreEqual(18, i);
+
+            projectile tick(projectile pr, environment en)
+            {
+                projectile r;
+                r.position = pr.position + pr.velocity;
+                r.velocity = pr.velocity + en.gravity + en.wind;
+                return r;
+            }
+        }
+    }
+
+
+    [TestClass]
+    public class Chapter2UnitTests
+    {
+        [TestMethod]
+        public void Colors()
+        {
+            Assert.IsTrue(true);
         }
     }
 }
