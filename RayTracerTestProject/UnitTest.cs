@@ -226,7 +226,6 @@ namespace RayTracerTestProject
             int i = 1;
             while (proj.position.Y > 0)
             {
-                System.Diagnostics.Debug.WriteLine("i: ", i, "Y: ", proj.position.Y);
                 proj = tick(proj, env);
                 i++;
             }
@@ -350,7 +349,6 @@ namespace RayTracerTestProject
         [TestMethod]
         public void PPMData()
         {
-
             var c = new RayTracer.Canvas(5, 3);
             var c1 = color(1.5, 0, 0);
             var c2 = color(0, 0.5, 0);
@@ -372,6 +370,44 @@ namespace RayTracerTestProject
             Assert.AreEqual(r1, reader.ReadLine());
             Assert.AreEqual(r2, reader.ReadLine());
             Assert.AreEqual(r3, reader.ReadLine());
+        }
+
+        [TestMethod]
+        public void PaintCanvas()
+        {
+            var blue = color(0, 0, 1);
+            var c = new RayTracer.Canvas(2, 2, blue);
+            Assert.IsTrue(areEqual(blue, pixel_at(c, 1, 1)));
+            Assert.IsTrue(areEqual(blue, pixel_at(c, 1, 0)));
+            Assert.IsTrue(areEqual(blue, pixel_at(c, 0, 1)));
+            Assert.IsTrue(areEqual(blue, pixel_at(c, 0, 0)));
+        }
+
+        [TestMethod]
+        public void PPMLongLines()
+        {
+            var c = new RayTracer.Canvas(10, 2, color(1, 0.8, 0.6));
+
+            string s = canvas_to_ppm(c);
+            var reader = new System.IO.StringReader(s);
+
+            //skim header
+            reader.ReadLine(); reader.ReadLine(); reader.ReadLine();
+
+            string r1 = "255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204";
+            string r2 = "153 255 204 153 255 204 153 255 204 153 255 204 153";
+            Assert.AreEqual(r1, reader.ReadLine());
+            Assert.AreEqual(r2, reader.ReadLine());
+            Assert.AreEqual(r1, reader.ReadLine());
+            Assert.AreEqual(r2, reader.ReadLine());
+        }
+
+        [TestMethod]
+        public void PPMEndNewLine()
+        {
+            var c = new RayTracer.Canvas(5, 3);
+            string s = canvas_to_ppm(c);
+            Assert.IsTrue(s.EndsWith("\n"));
         }
     }
 }
