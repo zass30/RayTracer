@@ -7,6 +7,7 @@ using static RayTracer.Canvas;
 using static RayTracer.Color;
 using System.Threading.Tasks;
 using Windows.Storage;
+using System.Text;
 
 namespace RayTracerTestProject
 {
@@ -212,8 +213,12 @@ namespace RayTracerTestProject
         }
 
         [TestMethod]
-        public void FireProjectile()
+        public async Task Chapter1Project()
         {
+            StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
+            StorageFile sampleFile = await storageFolder.CreateFileAsync("chapter1.txt", CreationCollisionOption.ReplaceExisting);
+            var s = new StringBuilder();
+
             var v = vector(1, 2, 3);
             var p = point(1, 2, 3);
 
@@ -229,9 +234,10 @@ namespace RayTracerTestProject
             while (proj.position.Y > 0)
             {
                 proj = tick(proj, env);
+                s.AppendLine("x: " + proj.position.X + "\ty: " + proj.position.Y + "\t t: " + i);
                 i++;
             }
-
+            await FileIO.WriteTextAsync(sampleFile, s.ToString());
             Assert.AreEqual(18, i);
 
             projectile tick(projectile pr, environment en)
@@ -407,24 +413,21 @@ namespace RayTracerTestProject
         [TestMethod]
         public void PPMEndNewLine()
         {
-            var c = new RayTracer.Canvas(900, 900);
+            var c = new RayTracer.Canvas(5, 3);
             string s = canvas_to_ppm(c);
             Assert.IsTrue(s.EndsWith("\n"));
         }
 
-  /*      [TestMethod]
+        [TestMethod]
         public async Task WriteFile()
         {
-            var c = new RayTracer.Canvas(100, 100, color(0.5, 0.6, 0.9));
-            Windows.Storage.StorageFolder storageFolder =
-    Windows.Storage.ApplicationData.Current.LocalFolder;
-            Windows.Storage.StorageFile sampleFile =
-                await storageFolder.CreateFileAsync("sample.ppm",
-                    Windows.Storage.CreationCollisionOption.ReplaceExisting);
-            await Windows.Storage.FileIO.WriteTextAsync(sampleFile, canvas_to_ppm(c));
+            var c = new RayTracer.Canvas(900, 550, color(0.5, 0.6, 0.9));
+            StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
+            StorageFile sampleFile = await storageFolder.CreateFileAsync("chapter2.ppm", CreationCollisionOption.ReplaceExisting);
+            await FileIO.WriteTextAsync(sampleFile, canvas_to_ppm(c));
 
-            Assert.AreEqual("adf", "adf");
+            //Assert.AreEqual("adf", "adf");
 
-        }*/
+        }
     }
 }
