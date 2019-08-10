@@ -64,40 +64,27 @@ namespace RayTracer
                 for (int i = 0; i < c.width; i++)
                 {
                     var color = c.pixels[i, j];
-                    l += color.rI.ToString().Length;
-                    if (l > 70)
-                    {
-                        s.Length = s.Length - 1;
-                        s.Append("\n");
-                        l = 0;
-                    }
-                    l++;
-                    s.Append(color.rI + " ");
-
-                    l += color.gI.ToString().Length;
-                    if (l > 70)
-                    {
-                        s.Length = s.Length - 1;
-                        s.Append("\n");
-                        l = 0;
-                    }
-                    l++;
-                    s.Append(color.gI + " ");
-
-                    l += color.bI.ToString().Length;
-                    if (l > 70)
-                    {
-                        s.Length = s.Length - 1;
-                        s.Append("\n");
-                        l = 0;
-                    }
-                    l++;
-                    s.Append(color.bI + " ");
+                    appendcolor(s, ref l, color.rI.ToString());
+                    appendcolor(s, ref l, color.gI.ToString());
+                    appendcolor(s, ref l, color.bI.ToString());
                 }
                 s.Length = s.Length - 1;
                 s.Append("\n");
             }
             return s.ToString();
+
+            void appendcolor(StringBuilder str, ref int len, string colorcode)
+            {
+                len += colorcode.Length;
+                if (len > 70)
+                {
+                    str.Length = str.Length - 1;
+                    str.Append("\n");
+                    len = 0;
+                }
+                len++;
+                str.Append(colorcode + " ");
+            }
         }
     }
 }
