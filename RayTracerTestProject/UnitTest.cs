@@ -419,15 +419,12 @@ namespace RayTracerTestProject
         }
 
         [TestMethod]
-        public async Task WriteFile()
+        public async Task Chapter2Project()
         {
             var c = new RayTracer.Canvas(900, 550, color(0.5, 0.6, 0.9));
             StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
             StorageFile sampleFile = await storageFolder.CreateFileAsync("chapter2.ppm", CreationCollisionOption.ReplaceExisting);
             await FileIO.WriteTextAsync(sampleFile, canvas_to_ppm(c));
-
-            //Assert.AreEqual("adf", "adf");
-
         }
     }
 }
