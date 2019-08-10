@@ -55,8 +55,9 @@ namespace RayTracer
 
         public static string canvas_to_ppm(Canvas c)
         {
-            string s = "P3\n";
-            s += c.width + " " + c.height + "\n255\n";
+            var s = new StringBuilder();
+            s.Append("P3\n");
+            s.Append(c.width + " " + c.height + "\n255\n");
             for (int j = 0; j < c.height; j++)
             {
                 int l = 0; // length for 70 count
@@ -66,38 +67,37 @@ namespace RayTracer
                     l += color.rI.ToString().Length;
                     if (l > 70)
                     {
-                        s = s.Trim();
-                        s += "\n";
+                        s.Length = s.Length - 1;
+                        s.Append("\n");
                         l = 0;
                     }
                     l++;
-                    s += color.rI + " ";
+                    s.Append(color.rI + " ");
 
                     l += color.gI.ToString().Length;
                     if (l > 70)
                     {
-                        s = s.Trim();
-                        s += "\n";
+                        s.Length = s.Length - 1;
+                        s.Append("\n");
                         l = 0;
                     }
                     l++;
-                    s += color.gI + " ";
+                    s.Append(color.gI + " ");
 
                     l += color.bI.ToString().Length;
                     if (l > 70)
                     {
-                        s = s.Trim();
-                        s += "\n";
+                        s.Length = s.Length - 1;
+                        s.Append("\n");
                         l = 0;
                     }
                     l++;
-                    s += color.bI + " ";
+                    s.Append(color.bI + " ");
                 }
-
-                s = s.Trim();
-                s += "\n";
+                s.Length = s.Length - 1;
+                s.Append("\n");
             }
-            return s;
+            return s.ToString();
         }
     }
 }

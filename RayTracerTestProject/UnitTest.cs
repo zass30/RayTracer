@@ -5,6 +5,8 @@ using static System.Math;
 using static RayTracer.Tuple;
 using static RayTracer.Canvas;
 using static RayTracer.Color;
+using System.Threading.Tasks;
+using Windows.Storage;
 
 namespace RayTracerTestProject
 {
@@ -405,9 +407,24 @@ namespace RayTracerTestProject
         [TestMethod]
         public void PPMEndNewLine()
         {
-            var c = new RayTracer.Canvas(5, 3);
+            var c = new RayTracer.Canvas(900, 900);
             string s = canvas_to_ppm(c);
             Assert.IsTrue(s.EndsWith("\n"));
         }
+
+  /*      [TestMethod]
+        public async Task WriteFile()
+        {
+            var c = new RayTracer.Canvas(100, 100, color(0.5, 0.6, 0.9));
+            Windows.Storage.StorageFolder storageFolder =
+    Windows.Storage.ApplicationData.Current.LocalFolder;
+            Windows.Storage.StorageFile sampleFile =
+                await storageFolder.CreateFileAsync("sample.ppm",
+                    Windows.Storage.CreationCollisionOption.ReplaceExisting);
+            await Windows.Storage.FileIO.WriteTextAsync(sampleFile, canvas_to_ppm(c));
+
+            Assert.AreEqual("adf", "adf");
+
+        }*/
     }
 }
