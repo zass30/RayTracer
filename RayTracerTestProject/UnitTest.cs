@@ -5,6 +5,7 @@ using static System.Math;
 using static RayTracer.Tuple;
 using static RayTracer.Canvas;
 using static RayTracer.Color;
+using static RayTracer.Matrix;
 using System.Threading.Tasks;
 using Windows.Storage;
 using System.Text;
@@ -169,7 +170,7 @@ namespace RayTracerTestProject
         {
             var a = new RayTracer.Tuple(1, -2, 3, -4);
             var r = new RayTracer.Tuple(0.5, -1, 1.5, -2);
-            Assert.IsTrue(areEqual(r, a/2));
+            Assert.IsTrue(areEqual(r, a / 2));
         }
 
         [TestMethod]
@@ -199,7 +200,7 @@ namespace RayTracerTestProject
 
             v = vector(1, 2, 3);
             n = normalize(v);
-            r = vector(1/Sqrt(14), 2/Sqrt(14), 3/ Sqrt(14));
+            r = vector(1 / Sqrt(14), 2 / Sqrt(14), 3 / Sqrt(14));
             Assert.IsTrue(areEqual(r, n));
         }
 
@@ -208,7 +209,7 @@ namespace RayTracerTestProject
         {
             var a = vector(1, 2, 3);
             var b = vector(2, 3, 4);
-            Assert.AreEqual(20, dot(a,b));
+            Assert.AreEqual(20, dot(a, b));
         }
 
         [TestMethod]
@@ -231,12 +232,12 @@ namespace RayTracerTestProject
             var s = new StringBuilder();
 
             TestHelper.projectile proj;
-            proj.position = point(0,1,0);
-            proj.velocity = normalize(vector(1,1,0));
+            proj.position = point(0, 1, 0);
+            proj.velocity = normalize(vector(1, 1, 0));
 
             TestHelper.environment env;
-            env.gravity = vector(0,-0.1, 0);
-            env.wind = vector(-0.01,0,0);
+            env.gravity = vector(0, -0.1, 0);
+            env.wind = vector(-0.01, 0, 0);
 
             int i = 1;
             while (proj.position.Y > 0)
@@ -323,7 +324,7 @@ namespace RayTracerTestProject
             var c = new RayTracer.Canvas(10, 20);
             var red = color(1, 0, 0);
             write_pixel(c, 2, 3, red);
-            Assert.IsTrue(areEqual(red, pixel_at(c, 2, 3)));            
+            Assert.IsTrue(areEqual(red, pixel_at(c, 2, 3)));
         }
 
         [TestMethod]
@@ -472,6 +473,27 @@ namespace RayTracerTestProject
                 RayTracer.Color red = color(1, 0.4, 0.7);
                 write_pixel(c, x_coord, y_coord, red);
             }
+        }
+
+
+
+    }
+
+    [TestClass]
+    public class Chapter3UnitTests
+    {
+        [TestMethod]
+        public void Matrix()
+        {
+            double[,] data = { {1, 2, 3, 4},
+                               {5.5, 6.5, 7.5, 8.5},
+                               {9, 10, 11, 12},
+                               {13.5, 14.5, 15.5, 16.5}
+                             };
+
+
+            RayTracer.Matrix m = new RayTracer.Matrix(data);
+            Assert.AreEqual(m.data[0, 0], 1);
         }
     }
 }
