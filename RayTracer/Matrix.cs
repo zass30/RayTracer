@@ -100,16 +100,39 @@ namespace RayTracer
         public static Matrix transpose(Matrix a)
         {
             double[,] data = {{a[0,0], a[1,0], a[2,0], a[3,0]},
-                               {a[0,1], a[1,1], a[2,1], a[3,1]},
-                               {a[0,2], a[1,2], a[2,2], a[3,2]},
-                               {a[0,3], a[1,3], a[2,3], a[3,3]},
+                              {a[0,1], a[1,1], a[2,1], a[3,1]},
+                              {a[0,2], a[1,2], a[2,2], a[3,2]},
+                              {a[0,3], a[1,3], a[2,3], a[3,3]},
                              };
             return new Matrix(data);
         }
 
         public static double determinant(Matrix a)
         {
-            return a[0, 0] * a[1, 1] - a[0, 1] * a[1, 0];
+            if (a.dimension == 2)
+                return a[0, 0] * a[1, 1] - a[0, 1] * a[1, 0];
+            else
+                return 0;
+        }
+
+        public static Matrix submatrix(Matrix a, int r, int c)
+        {
+            int dim = a.dimension;
+            double[,] data = new double[dim - 1, dim - 1];
+            int skip_i = 0;
+            for (int i = 0; i < dim - 1; i++)
+            {
+                if (i >= r)
+                    skip_i = 1;
+                int skip_j = 0;
+                for (int j = 0; j < dim - 1; j++)
+                {
+                    if (j >= c)
+                        skip_j = 1;
+                    data[i, j] = a[i + skip_i, j + skip_j];
+                }
+            }
+            return new Matrix(data);
         }
     }
 }

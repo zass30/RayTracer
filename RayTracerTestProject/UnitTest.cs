@@ -653,5 +653,32 @@ namespace RayTracerTestProject
             var A = new RayTracer.Matrix(new double[,] { { 1, 5 }, { -3, 2 } });
             Assert.AreEqual(17, determinant(A));
         }
+
+        [TestMethod]
+        public void SubMatrix()
+        {
+            double[,] data1 = { {1, 5, 0},
+                               {-3, 2, 7},
+                               {0, 6, -3},
+                             };
+            var A = new RayTracer.Matrix(data1);
+            var R = new RayTracer.Matrix(new double[,] { { -3, 2 }, { 0, 6 } });
+            Assert.IsTrue(areEqual(R, submatrix(A, 0, 2)));
+
+            double[,] data2 = {  {-6, 1, 1, 6},
+                                 {-8, 5, 8, 6},
+                                 {-1, 0, 8, 2},
+                                 {-7, 1, -1, 1}
+                             };
+
+            double[,] result = { {-6, 1, 6},
+                               {-8, 8, 6},
+                               {-7, -1, 1},
+                             };
+
+            A = new RayTracer.Matrix(data2);
+            R = new RayTracer.Matrix(result);
+            Assert.IsTrue(areEqual(R, submatrix(A, 2, 1)));
+        }
     }
 }
