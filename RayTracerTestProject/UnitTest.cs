@@ -11,21 +11,32 @@ using System.Text;
 
 namespace RayTracerTestProject
 {
-    [TestClass]
-    public class Chapter1UnitTests
+    public class TestHelper
     {
-        struct projectile
+        public struct projectile
         {
             public RayTracer.Tuple position;
             public RayTracer.Tuple velocity;
         }
 
-        struct environment
+        public struct environment
         {
             public RayTracer.Tuple gravity;
             public RayTracer.Tuple wind;
         }
 
+        public static projectile tick(projectile pr, environment en)
+        {
+            projectile r;
+            r.position = pr.position + pr.velocity;
+            r.velocity = pr.velocity + en.gravity + en.wind;
+            return r;
+        }
+    }
+
+    [TestClass]
+    public class Chapter1UnitTests
+    {
         [TestMethod]
         public void TuplePoint()
         {
@@ -219,34 +230,25 @@ namespace RayTracerTestProject
             StorageFile sampleFile = await storageFolder.CreateFileAsync("chapter1.txt", CreationCollisionOption.ReplaceExisting);
             var s = new StringBuilder();
 
-            var v = vector(1, 2, 3);
-            var p = point(1, 2, 3);
-
-            projectile proj;
+            TestHelper.projectile proj;
             proj.position = point(0,1,0);
             proj.velocity = normalize(vector(1,1,0));
 
-            environment env;
+            TestHelper.environment env;
             env.gravity = vector(0,-0.1, 0);
             env.wind = vector(-0.01,0,0);
 
             int i = 1;
             while (proj.position.Y > 0)
             {
-                proj = tick(proj, env);
+                proj = TestHelper.tick(proj, env);
                 s.AppendLine("x: " + proj.position.X + "\ty: " + proj.position.Y + "\t t: " + i);
                 i++;
             }
             await FileIO.WriteTextAsync(sampleFile, s.ToString());
             Assert.AreEqual(18, i);
 
-            projectile tick(projectile pr, environment en)
-            {
-                projectile r;
-                r.position = pr.position + pr.velocity;
-                r.velocity = pr.velocity + en.gravity + en.wind;
-                return r;
-            }
+
         }
     }
 
@@ -421,10 +423,55 @@ namespace RayTracerTestProject
         [TestMethod]
         public async Task Chapter2Project()
         {
-            var c = new RayTracer.Canvas(900, 550, color(0.5, 0.6, 0.9));
+            var c = new RayTracer.Canvas(900, 550);
+
+            TestHelper.projectile proj;
+            proj.position = point(0, 1, 0);
+            proj.velocity = normalize(vector(1, 1.8, 0)) * 11.25;
+
+            TestHelper.environment env;
+            env.gravity = vector(0, -0.1, 0);
+            env.wind = vector(-0.01, 0, 0);
+
+            int i = 1;
+            while (proj.position.Y > 0)
+            {
+                proj = TestHelper.tick(proj, env);
+                write_to_canvas(proj.position, c);
+                //s.AppendLine("x: " + proj.position.X + "\ty: " + proj.position.Y + "\t t: " + i);
+                i++;
+            }
+
+            write_pixel(c, 0, 0, color(1, 0.4, 0.7));
             StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
             StorageFile sampleFile = await storageFolder.CreateFileAsync("chapter2.ppm", CreationCollisionOption.ReplaceExisting);
             await FileIO.WriteTextAsync(sampleFile, canvas_to_ppm(c));
+
+
+            void write_to_canvas(RayTracer.Tuple position, RayTracer.Canvas canvas)
+            {
+                int x_coord = (int)Math.Round(position.X);
+                int y_coord = canvas.height - (int)Math.Round(position.Y);
+                if (x_coord >= canvas.width)
+                {
+                    x_coord = canvas.width - 1;
+                }
+                if (x_coord < 0)
+                {
+                    x_coord = 0;
+                }
+                if (y_coord >= canvas.height)
+                {
+                    y_coord = canvas.height - 1;
+                }
+                if (y_coord < 0)
+                {
+                    y_coord = 0;
+                }
+
+                RayTracer.Color red = color(1, 0.4, 0.7);
+                write_pixel(c, x_coord, y_coord, red);
+            }
         }
     }
 }
