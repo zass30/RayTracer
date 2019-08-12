@@ -253,7 +253,6 @@ namespace RayTracerTestProject
         }
     }
 
-
     [TestClass]
     public class Chapter2UnitTests
     {
@@ -483,7 +482,7 @@ namespace RayTracerTestProject
     public class Chapter3UnitTests
     {
         [TestMethod]
-        public void Matrix()
+        public void Matrix4x4()
         {
             double[,] data = { {1, 2, 3, 4},
                                {5.5, 6.5, 7.5, 8.5},
@@ -491,9 +490,60 @@ namespace RayTracerTestProject
                                {13.5, 14.5, 15.5, 16.5}
                              };
 
+            var m = new RayTracer.Matrix(data);
+            Assert.AreEqual(1, m[0, 0]);
+            Assert.AreEqual(4, m[0, 3]);
+            Assert.AreEqual(5.5, m[1, 0]);
+            Assert.AreEqual(7.5, m[1, 2]);
+            Assert.AreEqual(11, m[2, 2]);
+            Assert.AreEqual(13.5, m[3, 0]);
+            data[3, 2] = 6; // check changing original data doesn't affect matrix
+            Assert.AreEqual(15.5, m[3, 2]);
+            Assert.AreEqual(4, m.dimension);
+        }
 
-            RayTracer.Matrix m = new RayTracer.Matrix(data);
-            Assert.AreEqual(m.data[0, 0], 1);
+        [TestMethod]
+        public void MatrixOtherSizes()
+        {
+            var m = new RayTracer.Matrix(new double[,] { { -3, 5 }, { 1, -2 } });
+            Assert.AreEqual(-3, m[0, 0]);
+            Assert.AreEqual(5, m[0, 1]);
+            Assert.AreEqual(1, m[1, 0]);
+            Assert.AreEqual(-2, m[1, 1]);
+
+            double[,] data = { {-3, 5, 0},
+                               {1, -2, 7},
+                               {0, 1, 1},
+                             };
+
+            m = new RayTracer.Matrix(data);
+            Assert.AreEqual(-3, m[0, 0]);
+            Assert.AreEqual(-2, m[1, 1]);
+            Assert.AreEqual(1, m[2, 2]);
+            Assert.AreEqual(3, m.dimension);
+        }
+
+        [TestMethod]
+        public void MatrixEquality()
+        {
+            double[,] data = { {1, 2, 3, 4},
+                               {5, 6, 7, 8},
+                               {9, 8, 7, 6},
+                               {5, 4, 3, 2}
+                             };
+            var A  = new RayTracer.Matrix(data);
+            var B = new RayTracer.Matrix(data);
+            Assert.IsTrue(areEqual(A, B));
+
+
+            double[,] data2 = { {2, 3, 4, 5},
+                                {6, 7, 8, 9},
+                                {8, 7, 6, 5},
+                                {4, 3, 2, 1}
+                             };
+
+            B = new RayTracer.Matrix(data2);
+            Assert.IsFalse(areEqual(A, B));
         }
     }
 }
