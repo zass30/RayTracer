@@ -10,10 +10,23 @@ namespace RayTracer
     public class Tuple
     {
         private static double epsilon = 0.000001;
-        public double X { get; set; }
-        public double Y { get; set; }
-        public double Z { get; set; }
-        public double W { get; set; }
+        public double X { get { return data[0]; } set { data[0] = value; } }
+        public double Y { get { return data[1]; } set { data[1] = value; } }
+        public double Z { get { return data[2]; } set { data[2] = value; } }
+        public double W { get { return data[3]; } set { data[3] = value; } }
+        private double[] data = new double[4];
+
+        public double this[int key]
+        {
+            get
+            {
+                return this.data[key];
+            }
+            set
+            {
+                this.data[key] = value;
+            }
+        }
 
         public Tuple(double x, double y, double z, double w)
         {

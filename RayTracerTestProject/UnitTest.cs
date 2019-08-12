@@ -249,7 +249,22 @@ namespace RayTracerTestProject
             await FileIO.WriteTextAsync(sampleFile, s.ToString());
             Assert.AreEqual(18, i);
 
+        }
 
+        [TestMethod]
+        public void TupleData()
+        {
+            var a = new RayTracer.Tuple(1, 2, 3, 4);
+            double[] data = new double[4];
+            data[0] = 1;
+            data[1] = 2;
+            data[2] = 3;
+            data[3] = 4;
+
+            Assert.AreEqual(data[0], a[0]);
+            Assert.AreEqual(data[1], a[1]);
+            Assert.AreEqual(data[2], a[2]);
+            Assert.AreEqual(data[3], a[3]);
         }
     }
 
