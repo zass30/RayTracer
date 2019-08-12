@@ -588,8 +588,7 @@ namespace RayTracerTestProject
                              };
 
             var R = new RayTracer.Matrix(result);
-            var C = A * B;
-            Assert.IsTrue(areEqual(R, C));
+            Assert.IsTrue(areEqual(R, A * B));
         }
 
         [TestMethod]
@@ -603,8 +602,23 @@ namespace RayTracerTestProject
             var A = new RayTracer.Matrix(data);
             var b = new RayTracer.Tuple(1, 2, 3, 1);
             var r = new RayTracer.Tuple(18, 24, 33, 1);
-            var c = A * b;
-            Assert.IsTrue(areEqual(r, c));
+            Assert.IsTrue(areEqual(r, A * b));
+        }
+
+        [TestMethod]
+        public void IdentityMatrix()
+        {
+            double[,] data = { {0, 1, 2, 4},
+                               {1, 2, 4, 8},
+                               {2, 4, 8, 16},
+                               {4, 8, 16, 32}
+                             };
+            var A = new RayTracer.Matrix(data);
+            var I = RayTracer.Matrix.identity();
+            Assert.IsTrue(areEqual(A, A * I));
+
+            var a = new RayTracer.Tuple(1, 2, 3, 4);
+            Assert.IsTrue(areEqual(a, I * a));
         }
     }
 }

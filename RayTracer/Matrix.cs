@@ -24,6 +24,16 @@ namespace RayTracer
             this.data = new double[dim, dim];
         }
 
+        public static Matrix identity()
+        {
+            double[,] data = { {1, 0, 0, 0},
+                               {0, 1, 0, 0},
+                               {0, 0, 1, 0},
+                               {0, 0, 0, 1}
+                             };
+            return new Matrix(data);
+        }
+
         public double this[int key1, int key2]
         {
             get
