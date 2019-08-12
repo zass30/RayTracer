@@ -614,11 +614,37 @@ namespace RayTracerTestProject
                                {4, 8, 16, 32}
                              };
             var A = new RayTracer.Matrix(data);
-            var I = RayTracer.Matrix.identity();
+            var I = identity();
             Assert.IsTrue(areEqual(A, A * I));
 
             var a = new RayTracer.Tuple(1, 2, 3, 4);
             Assert.IsTrue(areEqual(a, I * a));
+        }
+
+        [TestMethod]
+        public void MatrixTranspose()
+        {
+            double[,] data = { {0, 9, 3, 0},
+                               {9, 8, 0, 8},
+                               {1, 8, 5, 3},
+                               {0, 0, 5, 8}
+                             };
+            var A = new RayTracer.Matrix(data);
+
+            double[,] result = { {0, 9, 1, 0},
+                                 {9, 8, 8, 0},
+                                 {3, 0, 5, 5},
+                                 {0, 8, 3, 8}
+                             };
+            var R = new RayTracer.Matrix(result);
+            Assert.IsTrue(areEqual(R, transpose(A)));
+        }
+
+        [TestMethod]
+        public void IdentityTranspose()
+        {
+            var I = identity();
+            Assert.IsTrue(areEqual(I, transpose(I)));
         }
     }
 }
