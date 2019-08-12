@@ -77,20 +77,14 @@ namespace RayTracer
 
         public static Tuple operator *(Matrix a, Tuple b)
         {
-            double[] bvec = new double[4];
-            bvec[0] = b.X;
-            bvec[1] = b.Y;
-            bvec[2] = b.Z;
-            bvec[3] = b.W;
-            double[] result = new double[4];
-
+            Tuple result = new Tuple(0,0,0,0); 
             Parallel.For(0, 4, i =>
             {
                 for (int j = 0; j < 4; ++j)
-                        result[i] += a[i, j] * bvec[j];
+                        result[i] += a[i, j] * b[j];
             }
             );
-            return new Tuple(result[0], result[1], result[2], result[3]);
+            return result;
         }
     }
 }
