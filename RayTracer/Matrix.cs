@@ -20,7 +20,7 @@ namespace RayTracer
 
         public Matrix(int dim)
         {
-            this.dimension = dim*dim;
+            this.dimension = dim;
             this.data = new double[dim, dim];
         }
 
@@ -57,6 +57,40 @@ namespace RayTracer
             if (Math.Abs(a - b) < epsilon)
                 return true;
             return false;
+        }
+
+        public static Matrix operator *(Matrix a, Matrix b)
+        {
+            int dim = a.dimension;
+            Matrix result = new Matrix(dim);
+
+            Parallel.For(0, dim, i =>
+            {
+                for (int j = 0; j < dim; ++j) 
+                    for (int k = 0; k < dim; ++k) 
+                        result[i,j] += a[i,k] * b[k,j];
+            }
+            );
+
+            return result;
+        }
+
+        public static Tuple operator *(Matrix a, Tuple b)
+        {
+            double[] bvec = new double[4];
+            bvec[0] = b.X;
+            bvec[1] = b.Y;
+            bvec[2] = b.Z;
+            bvec[3] = b.W;
+            double[] result = new double[4];
+
+            Parallel.For(0, 4, i =>
+            {
+                for (int j = 0; j < 4; ++j)
+                        result[i] += a[i, j] * bvec[j];
+            }
+            );
+            return new Tuple(result[0], result[1], result[2], result[3]);
         }
     }
 }

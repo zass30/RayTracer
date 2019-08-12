@@ -526,13 +526,13 @@ namespace RayTracerTestProject
         [TestMethod]
         public void MatrixEquality()
         {
-            double[,] data = { {1, 2, 3, 4},
-                               {5, 6, 7, 8},
-                               {9, 8, 7, 6},
-                               {5, 4, 3, 2}
+            double[,] data1 = { {1, 2, 3, 4},
+                                {5, 6, 7, 8},
+                                {9, 8, 7, 6},
+                                {5, 4, 3, 2}
                              };
-            var A  = new RayTracer.Matrix(data);
-            var B = new RayTracer.Matrix(data);
+            var A = new RayTracer.Matrix(data1);
+            var B = new RayTracer.Matrix(data1);
             Assert.IsTrue(areEqual(A, B));
 
 
@@ -544,6 +544,52 @@ namespace RayTracerTestProject
 
             B = new RayTracer.Matrix(data2);
             Assert.IsFalse(areEqual(A, B));
+        }
+
+        [TestMethod]
+        public void MatrixMultiplication()
+        {
+            double[,] data1 = { {1, 2, 3, 4},
+                                {5, 6, 7, 8},
+                                {9, 8, 7, 6},
+                                {5, 4, 3, 2}
+                             };
+
+
+            double[,] data2 = { {-2, 1, 2, 3},
+                                {3, 2, 1, -1},
+                                {4, 3, 6, 5},
+                                {1, 2, 7, 8}
+                             };
+
+            var A = new RayTracer.Matrix(data1);
+            var B = new RayTracer.Matrix(data2);
+
+
+            double[,] result = { {20, 22, 50, 48},
+                                 {44, 54, 114, 108},
+                                 {40, 58, 110, 102},
+                                 {16, 26, 46, 42}
+                             };
+
+            var R = new RayTracer.Matrix(result);
+            var C = A * B;
+            Assert.IsTrue(areEqual(R, C));
+        }
+
+        [TestMethod]
+        public void MatrixMultByTuple()
+        {
+            double[,] data = { {1, 2, 3, 4},
+                               {2, 4, 4, 2},
+                               {8, 6, 4, 1},
+                               {0, 0, 0, 1}
+                             };
+            var A = new RayTracer.Matrix(data);
+            var b = new RayTracer.Tuple(1, 2, 3, 1);
+            var r = new RayTracer.Tuple(18, 24, 33, 1);
+            var c = A * b;
+            Assert.IsTrue(areEqual(r, c));
         }
     }
 }
