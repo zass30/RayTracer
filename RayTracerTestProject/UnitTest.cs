@@ -646,5 +646,12 @@ namespace RayTracerTestProject
             var I = identity();
             Assert.IsTrue(areEqual(I, transpose(I)));
         }
+
+        [TestMethod]
+        public void Determinant2x2()
+        {
+            var A = new RayTracer.Matrix(new double[,] { { 1, 5 }, { -3, 2 } });
+            Assert.AreEqual(17, determinant(A));
+        }
     }
 }

@@ -12,7 +12,7 @@ namespace RayTracer
         public int dimension;
         public double[,] data { get; set; }
 
-        public Matrix(double [,] data)
+        public Matrix(double[,] data)
         {
             dimension = (int)Math.Sqrt(data.Length);
             this.data = data.Clone() as double[,]; ;
@@ -76,9 +76,9 @@ namespace RayTracer
 
             Parallel.For(0, dim, i =>
             {
-                for (int j = 0; j < dim; ++j) 
-                    for (int k = 0; k < dim; ++k) 
-                        result[i,j] += a[i,k] * b[k,j];
+                for (int j = 0; j < dim; ++j)
+                    for (int k = 0; k < dim; ++k)
+                        result[i, j] += a[i, k] * b[k, j];
             }
             );
 
@@ -87,11 +87,11 @@ namespace RayTracer
 
         public static Tuple operator *(Matrix a, Tuple b)
         {
-            Tuple result = new Tuple(0,0,0,0); 
+            Tuple result = new Tuple(0, 0, 0, 0);
             Parallel.For(0, 4, i =>
             {
                 for (int j = 0; j < 4; ++j)
-                        result[i] += a[i, j] * b[j];
+                    result[i] += a[i, j] * b[j];
             }
             );
             return result;
@@ -99,12 +99,17 @@ namespace RayTracer
 
         public static Matrix transpose(Matrix a)
         {
-            double [,] data = {{a[0,0], a[1,0], a[2,0], a[3,0]},
+            double[,] data = {{a[0,0], a[1,0], a[2,0], a[3,0]},
                                {a[0,1], a[1,1], a[2,1], a[3,1]},
                                {a[0,2], a[1,2], a[2,2], a[3,2]},
                                {a[0,3], a[1,3], a[2,3], a[3,3]},
                              };
             return new Matrix(data);
+        }
+
+        public static double determinant(Matrix a)
+        {
+            return a[0, 0] * a[1, 1] - a[0, 1] * a[1, 0];
         }
     }
 }
