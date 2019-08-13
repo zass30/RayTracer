@@ -112,7 +112,14 @@ namespace RayTracer
             if (a.dimension == 2)
                 return a[0, 0] * a[1, 1] - a[0, 1] * a[1, 0];
             else
-                return 0;
+            {
+                double result = 0;
+                for (int i = 0; i < a.dimension; i++)
+                {
+                    result += a[0, i] * cofactor(a, 0, i);
+                }
+                return result;
+            }
         }
 
         public static Matrix submatrix(Matrix a, int r, int c)
