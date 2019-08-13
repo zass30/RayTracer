@@ -821,5 +821,26 @@ namespace RayTracerTestProject
             R = new RayTracer.Matrix(data4);
             Assert.IsTrue(areEqual(R, inverse(A)));
         }
+
+        [TestMethod]
+        public void MultiplyProductByInverse()
+        {
+            double[,] data1 = { {3, -9, 7, 3},
+                                {3, -8, 2, -9},
+                                {-4, 4, 4, 1},
+                                {-6, 5, -1, 1},
+                              };
+
+            double[,] data2 = { {8, 2, 2, 2},
+                                {4, -1, 7, 0},
+                                {7, 0, 5, 4},
+                                {6, -2, 0, 5},
+                              };
+
+            var A = new RayTracer.Matrix(data1);
+            var B = new RayTracer.Matrix(data2);
+            var C = A * B;
+            Assert.IsTrue(areEqual(A, C * inverse(B)));
+        }
     }
 }
