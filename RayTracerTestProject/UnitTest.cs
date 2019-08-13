@@ -896,5 +896,13 @@ namespace RayTracerTestProject
             var v = vector(-4, 6, 8);
             Assert.IsTrue(areEqual(vector(-2, 2, 2), inv * v));
         }
+
+        [TestMethod]
+        public void Reflection()
+        {
+            var transform = scaling(-1, 1, 1);
+            var p = point(2, 3, 4);
+            Assert.IsTrue(areEqual(point(-2, 3, 4), transform * p));
+        }
     }
 }
