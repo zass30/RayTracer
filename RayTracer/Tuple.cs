@@ -9,7 +9,7 @@ namespace RayTracer
 {
     public class Tuple
     {
-        private static double epsilon = 0.000001;
+        private static double epsilon = 0.00001;
         public double X { get { return data[0]; } set { data[0] = value; } }
         public double Y { get { return data[1]; } set { data[1] = value; } }
         public double Z { get { return data[2]; } set { data[2] = value; } }

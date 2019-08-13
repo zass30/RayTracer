@@ -8,7 +8,7 @@ namespace RayTracer
 {
     public class Matrix
     {
-        private static double epsilon = 0.000001;
+        private static double epsilon = 0.00001;
         public int dimension;
         public double[,] data { get; set; }
 
@@ -151,6 +151,24 @@ namespace RayTracer
         public static double cofactor(Matrix a, int r, int c)
         {
             return (((r+c) % 2 == 0) ? 1 : -1) * determinant(submatrix(a, r, c));
+        }
+
+        public static Matrix inverse(Matrix a)
+        {
+            double det = determinant(a);
+            int dim = a.dimension;
+            double c;
+            Matrix r = new Matrix(dim);
+
+            for (int i = 0; i < dim; i++)
+            {
+                for (int j = 0; j < dim; j++)
+                {
+                    c = cofactor(a, i, j);
+                    r[j, i] = c / det;
+                }
+            }
+            return r;
         }
     }
 }
