@@ -701,6 +701,7 @@ namespace RayTracerTestProject
                                {2, -1, -7},
                                {6, -1, 5},
                              };
+
             var A = new RayTracer.Matrix(data);
             Assert.AreEqual(-12, minor(A, 0, 0));
             Assert.AreEqual(-12, cofactor(A, 0, 0));
@@ -712,9 +713,10 @@ namespace RayTracerTestProject
         public void DeterminantLarger()
         {
             double[,] data1 = { {1, 2, 6},
-                               {-5, 8, -4},
-                               {2, 6, 4},
-                             };
+                                {-5, 8, -4},
+                                {2, 6, 4},
+                              };
+
             var A = new RayTracer.Matrix(data1);
             Assert.AreEqual(56, cofactor(A, 0, 0));
             Assert.AreEqual(12, cofactor(A, 0, 1));
@@ -722,16 +724,39 @@ namespace RayTracerTestProject
             Assert.AreEqual(-196, determinant(A));
 
             double[,] data2 = { {-2, -8, 3, 5},
-                               {-3, 1, 7, 3},
-                               {1, 2, -9, 6},
-                               {-6, 7, 7, -9},
-                             };
+                                {-3, 1, 7, 3},
+                                {1, 2, -9, 6},
+                                {-6, 7, 7, -9},
+                              };
+
             A = new RayTracer.Matrix(data2);
             Assert.AreEqual(690, cofactor(A, 0, 0));
             Assert.AreEqual(447, cofactor(A, 0, 1));
             Assert.AreEqual(210, cofactor(A, 0, 2));
             Assert.AreEqual(51, cofactor(A, 0, 3));
             Assert.AreEqual(-4071, determinant(A));
+        }
+
+        [TestMethod]
+        public void Invertibility()
+        {
+            double[,] data1 = { {6, 4, 4, 4},
+                                {5, 5, 7, 6},
+                                {4, -9, 3, -7},
+                                {9, 1, 7, -6},
+                             };
+
+            var A = new RayTracer.Matrix(data1);
+            Assert.IsTrue(A.isInvertible());
+
+            double[,] data2 = { {-4, 2, -2, -3},
+                                {9, 6, 2, 6},
+                                {0, -5, 1, -5},
+                                {0, 0, 0, 0},
+                             };
+
+            A = new RayTracer.Matrix(data2);
+            Assert.IsFalse(A.isInvertible());
         }
     }
 }

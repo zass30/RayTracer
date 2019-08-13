@@ -46,6 +46,11 @@ namespace RayTracer
             }
         }
 
+        public bool isInvertible()
+        {
+            return determinant(this) != 0;
+        }
+
         public static bool areEqual(Matrix a, Matrix b)
         {
             if (a.dimension != b.dimension)
