@@ -804,6 +804,22 @@ namespace RayTracerTestProject
             var A = new RayTracer.Matrix(data1);
             var R = new RayTracer.Matrix(data2);
             Assert.IsTrue(areEqual(R, inverse(A)));
+
+            double[,] data3 = { {9, 3, 0, 9},
+                                {-5, -2, -6, -3},
+                                {-4, 9, 6, 4},
+                                {-7, 6, 6, 2},
+                              };
+
+            double[,] data4 = { {-0.04074, -0.07778, 0.14444, -0.22222},
+                                {-0.07778, 0.03333, 0.36667, -0.33333},
+                                {-0.02901, -0.14630, -0.10926, 0.12963},
+                                {0.17778, 0.06667, -0.26667, 0.33333},
+                              };
+
+            A = new RayTracer.Matrix(data3);
+            R = new RayTracer.Matrix(data4);
+            Assert.IsTrue(areEqual(R, inverse(A)));
         }
     }
 }
