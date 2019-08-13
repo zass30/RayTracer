@@ -904,5 +904,24 @@ namespace RayTracerTestProject
             var p = point(2, 3, 4);
             Assert.IsTrue(areEqual(point(-2, 3, 4), transform * p));
         }
+
+        [TestMethod]
+        public void Rotation_X()
+        {
+            var p = point(0, 1, 0);
+            var half_quarter = rotation_x(PI / 4);
+            var full_quarter = rotation_x(PI / 2);
+            Assert.IsTrue(areEqual(point(0, Sqrt(2) / 2, Sqrt(2) / 2), half_quarter * p));
+            Assert.IsTrue(areEqual(point(0, 0, 1), full_quarter * p));
+        }
+
+        [TestMethod]
+        public void Rotation_XInverse()
+        {
+            var p = point(0, 1, 0);
+            var half_quarter = rotation_x(PI / 4);
+            var inv = inverse(half_quarter);
+                Assert.IsTrue(areEqual(point(0, Sqrt(2) / 2, -Sqrt(2) / 2), inv * p));
+        }
     }
 }

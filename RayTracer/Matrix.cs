@@ -188,5 +188,27 @@ namespace RayTracer
             r[2, 2] = z;
             return r;
         }
+
+        public static Matrix rotation_x(double rad)
+        {
+            Matrix r = identity();
+            r[1, 1] = Math.Cos(rad);
+            r[1, 2] = -Math.Sin(rad);
+            r[2, 2] = Math.Cos(rad);
+            r[2, 1] = Math.Sin(rad);
+            return r;
+        }
+
+        public static Matrix rotation_y(double rad)
+        {
+            Matrix r = identity();
+            return r;
+        }
+
+        public static Matrix rotation_z(double rad)
+        {
+            Matrix r = identity();
+            return r;
+        }
     }
 }
