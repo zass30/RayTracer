@@ -134,5 +134,10 @@ namespace RayTracer
             }
             return new Matrix(data);
         }
+
+        public static double minor(Matrix a, int r, int c)
+        {
+            return determinant(submatrix(a, r, c));
+        }
     }
 }

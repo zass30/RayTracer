@@ -635,7 +635,7 @@ namespace RayTracerTestProject
                                  {9, 8, 8, 0},
                                  {3, 0, 5, 5},
                                  {0, 8, 3, 8}
-                             };
+                               };
             var R = new RayTracer.Matrix(result);
             Assert.IsTrue(areEqual(R, transpose(A)));
         }
@@ -658,9 +658,9 @@ namespace RayTracerTestProject
         public void SubMatrix()
         {
             double[,] data1 = { {1, 5, 0},
-                               {-3, 2, 7},
-                               {0, 6, -3},
-                             };
+                                {-3, 2, 7},
+                                {0, 6, -3},
+                              };
             var A = new RayTracer.Matrix(data1);
             var R = new RayTracer.Matrix(new double[,] { { -3, 2 }, { 0, 6 } });
             Assert.IsTrue(areEqual(R, submatrix(A, 0, 2)));
@@ -669,16 +669,29 @@ namespace RayTracerTestProject
                                  {-8, 5, 8, 6},
                                  {-1, 0, 8, 2},
                                  {-7, 1, -1, 1}
-                             };
+                              };
 
             double[,] result = { {-6, 1, 6},
-                               {-8, 8, 6},
-                               {-7, -1, 1},
-                             };
+                                 {-8, 8, 6},
+                                 {-7, -1, 1},
+                               };
 
             A = new RayTracer.Matrix(data2);
             R = new RayTracer.Matrix(result);
             Assert.IsTrue(areEqual(R, submatrix(A, 2, 1)));
+        }
+
+        [TestMethod]
+        public void Minor()
+        {
+            double[,] data = { {3, 5, 0},
+                                {2, -1, -7},
+                                {6, -1, 5},
+                             };
+            var A = new RayTracer.Matrix(data);
+            var B = submatrix(A, 1, 0);
+            Assert.AreEqual(25, determinant(B));
+            Assert.AreEqual(25, minor(A,1,0));
         }
     }
 }
