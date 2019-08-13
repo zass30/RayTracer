@@ -73,27 +73,23 @@ namespace RayTracer
         {
             int dim = a.dimension;
             Matrix result = new Matrix(dim);
-
-            Parallel.For(0, dim, i =>
+            for (int i = 0; i < dim; ++i)
             {
                 for (int j = 0; j < dim; ++j)
                     for (int k = 0; k < dim; ++k)
                         result[i, j] += a[i, k] * b[k, j];
             }
-            );
-
             return result;
         }
 
         public static Tuple operator *(Matrix a, Tuple b)
         {
             Tuple result = new Tuple(0, 0, 0, 0);
-            Parallel.For(0, 4, i =>
-            {
+            for (int i = 0; i < 4; ++i)
+            { 
                 for (int j = 0; j < 4; ++j)
                     result[i] += a[i, j] * b[j];
             }
-            );
             return result;
         }
 
