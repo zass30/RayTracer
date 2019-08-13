@@ -785,5 +785,25 @@ namespace RayTracerTestProject
             var R = new RayTracer.Matrix(data2);
             Assert.IsTrue(areEqual(R, B));
         }
+
+        [TestMethod]
+        public void InverseMoreTests()
+        {
+            double[,] data1 = { {8, -5, 9, 2},
+                                {7, 5, 6, 1},
+                                {-6, 0, 9, 6},
+                                {-3, 0, -9, -4},
+                              };
+
+            double[,] data2 = { {-0.15385, -0.15385, -0.28205, -0.53846},
+                                {-0.07692, 0.12308, 0.02564, 0.03077},
+                                {0.35897, 0.35897, 0.43590, 0.92308},
+                                {-0.69231, -0.69231, -0.76923, -1.92308},
+                              };
+
+            var A = new RayTracer.Matrix(data1);
+            var R = new RayTracer.Matrix(data2);
+            Assert.IsTrue(areEqual(R, inverse(A)));
+        }
     }
 }
