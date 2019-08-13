@@ -691,7 +691,7 @@ namespace RayTracerTestProject
             var A = new RayTracer.Matrix(data);
             var B = submatrix(A, 1, 0);
             Assert.AreEqual(25, determinant(B));
-            Assert.AreEqual(25, minor(A,1,0));
+            Assert.AreEqual(25, minor(A, 1, 0));
         }
 
         [TestMethod]
@@ -772,9 +772,9 @@ namespace RayTracerTestProject
             var B = inverse(A);
             Assert.AreEqual(532, determinant(A));
             Assert.AreEqual(-160, cofactor(A, 2, 3));
-            Assert.AreEqual(-160/532.0, B[3,2]);
+            Assert.AreEqual(-160 / 532.0, B[3, 2]);
             Assert.AreEqual(105, cofactor(A, 3, 2));
-            Assert.AreEqual(105/532.0, B[2, 3]);
+            Assert.AreEqual(105 / 532.0, B[2, 3]);
 
             double[,] data2 = { {0.21805, 0.45113, 0.24060, -0.04511},
                                 {-0.80827, -1.45677, -0.44361, 0.52068},
@@ -841,6 +841,35 @@ namespace RayTracerTestProject
             var B = new RayTracer.Matrix(data2);
             var C = A * B;
             Assert.IsTrue(areEqual(A, C * inverse(B)));
+        }
+    }
+
+    [TestClass]
+    public class Chapter4UnitTests
+    {
+        [TestMethod]
+        public void Translation()
+        {
+            var transform = translation(5, -3, 2);
+            var p = point(-3, 4, 5);
+            Assert.IsTrue(areEqual(point(2, 1, 7), transform * p));
+        }
+
+        [TestMethod]
+        public void InverseOfTranslation()
+        {
+            var transform = translation(5, -3, 2);
+            var inv = inverse(transform);
+            var p = point(-3, 4, 5);
+            Assert.IsTrue(areEqual(point(-8, 7, 3), inv * p));
+        }
+
+        [TestMethod]
+        public void TranslationDoesNotAffectVectors()
+        {
+            var transform = translation(5, -3, 2);
+            var v = vector(-3, 4, 5);
+            Assert.IsTrue(areEqual(v, transform * v));
         }
     }
 }

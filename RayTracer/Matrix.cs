@@ -34,15 +34,15 @@ namespace RayTracer
             return new Matrix(data);
         }
 
-        public double this[int key1, int key2]
+        public double this[int row, int column]
         {
             get
             {
-                return this.data[key1, key2];
+                return this.data[row, column];
             }
             set
             {
-                this.data[key1, key2] = value;
+                this.data[row, column] = value;
             }
         }
 
@@ -168,6 +168,15 @@ namespace RayTracer
                     r[j, i] = c / det;
                 }
             }
+            return r;
+        }
+
+        public static Matrix translation(double x, double y, double z)
+        {
+            Matrix r = identity();
+            r[0, 3] = x;
+            r[1, 3] = y;
+            r[2, 3] = z;
             return r;
         }
     }
