@@ -685,13 +685,27 @@ namespace RayTracerTestProject
         public void Minor()
         {
             double[,] data = { {3, 5, 0},
-                                {2, -1, -7},
-                                {6, -1, 5},
+                               {2, -1, -7},
+                               {6, -1, 5},
                              };
             var A = new RayTracer.Matrix(data);
             var B = submatrix(A, 1, 0);
             Assert.AreEqual(25, determinant(B));
             Assert.AreEqual(25, minor(A,1,0));
+        }
+
+        [TestMethod]
+        public void Cofactor()
+        {
+            double[,] data = { {3, 5, 0},
+                               {2, -1, -7},
+                               {6, -1, 5},
+                             };
+            var A = new RayTracer.Matrix(data);
+            Assert.AreEqual(-12, minor(A, 0, 0));
+            Assert.AreEqual(-12, cofactor(A, 0, 0));
+            Assert.AreEqual(25, minor(A, 1, 0));
+            Assert.AreEqual(-25, cofactor(A, 1, 0));
         }
     }
 }

@@ -139,5 +139,10 @@ namespace RayTracer
         {
             return determinant(submatrix(a, r, c));
         }
+
+        public static double cofactor(Matrix a, int r, int c)
+        {
+            return (((r+c) % 2 == 0) ? 1 : -1) * determinant(submatrix(a, r, c));
+        }
     }
 }
