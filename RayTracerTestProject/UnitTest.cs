@@ -871,5 +871,30 @@ namespace RayTracerTestProject
             var v = vector(-3, 4, 5);
             Assert.IsTrue(areEqual(v, transform * v));
         }
+
+        [TestMethod]
+        public void ScalingPoint()
+        {
+            var transform = scaling(2, 3, 4);
+            var p = point(-4, 6, 8);
+            Assert.IsTrue(areEqual(point(-8, 18, 32), transform * p));
+        }
+
+        [TestMethod]
+        public void ScalingVector()
+        {
+            var transform = scaling(2, 3, 4);
+            var v = vector(-4, 6, 8);
+            Assert.IsTrue(areEqual(vector(-8, 18, 32), transform * v));
+        }
+
+        [TestMethod]
+        public void InverseScaling()
+        {
+            var transform = scaling(2, 3, 4);
+            var inv = inverse(transform);
+            var v = vector(-4, 6, 8);
+            Assert.IsTrue(areEqual(vector(-2, 2, 2), inv * v));
+        }
     }
 }

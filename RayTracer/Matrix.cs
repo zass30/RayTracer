@@ -179,5 +179,14 @@ namespace RayTracer
             r[2, 3] = z;
             return r;
         }
+
+        public static Matrix scaling(double x, double y, double z)
+        {
+            Matrix r = identity();
+            r[0, 0] = x;
+            r[1, 1] = y;
+            r[2, 2] = z;
+            return r;
+        }
     }
 }
