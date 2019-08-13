@@ -171,6 +171,11 @@ namespace RayTracer
             return r;
         }
 
+        public Matrix translate(double x, double y, double z)
+        {
+            return translation(x, y, z);
+        }
+
         public static Matrix translation(double x, double y, double z)
         {
             Matrix r = identity();
@@ -180,6 +185,11 @@ namespace RayTracer
             return r;
         }
 
+        public Matrix scale(double x, double y, double z)
+        {
+            return scaling(x, y, z);
+        }
+
         public static Matrix scaling(double x, double y, double z)
         {
             Matrix r = identity();
@@ -187,6 +197,11 @@ namespace RayTracer
             r[1, 1] = y;
             r[2, 2] = z;
             return r;
+        }
+
+        public Matrix rotate_x(double rad)
+        {
+            return rotation_x(rad);
         }
 
         public static Matrix rotation_x(double rad)
@@ -199,6 +214,11 @@ namespace RayTracer
             return r;
         }
 
+        public Matrix rotate_y(double rad)
+        {
+            return rotation_y(rad);
+        }
+
         public static Matrix rotation_y(double rad)
         {
             Matrix r = identity();
@@ -207,6 +227,11 @@ namespace RayTracer
             r[2, 0] = -Math.Sin(rad);
             r[2, 2] = Math.Cos(rad);
             return r;
+        }
+
+        public Matrix rotate_z(double rad)
+        {
+            return rotation_z(rad);
         }
 
         public static Matrix rotation_z(double rad)
