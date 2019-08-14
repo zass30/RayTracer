@@ -243,5 +243,17 @@ namespace RayTracer
             r[1, 1] = Math.Cos(rad);
             return r;
         }
+
+        public static Matrix shearing(double xy, double xz, double yx, double yz, double zx, double zy)
+        {
+            Matrix r = identity();
+            r[0, 1] = xy;
+            r[0, 2] = xz;
+            r[1, 0] = yx;
+            r[1, 2] = yz;
+            r[2, 0] = zx;
+            r[2, 1] = zy;
+            return r;
+        }
     }
 }

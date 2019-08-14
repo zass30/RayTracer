@@ -954,5 +954,28 @@ namespace RayTracerTestProject
             r = translation(10, 5, 7) * r;
             Assert.IsTrue(areEqual(r, transform));
         }
+
+        [TestMethod]
+        public void Shearing()
+        {
+            var transform = shearing(1, 0, 0, 0, 0, 0);
+            var p = point(2, 3, 4);
+            Assert.IsTrue(areEqual(point(5, 3, 4), transform * p));
+
+            transform = shearing(0, 1, 0, 0, 0, 0);
+            Assert.IsTrue(areEqual(point(6, 3, 4), transform * p));
+
+            transform = shearing(0, 0, 1, 0, 0, 0);
+            Assert.IsTrue(areEqual(point(2, 5, 4), transform * p));
+
+            transform = shearing(0, 0, 0, 1, 0, 0);
+            Assert.IsTrue(areEqual(point(2, 7, 4), transform * p));
+
+            transform = shearing(0, 0, 0, 0, 1, 0);
+            Assert.IsTrue(areEqual(point(2, 3, 6), transform * p));
+
+            transform = shearing(0, 0, 0, 0, 0, 1);
+            Assert.IsTrue(areEqual(point(2, 3, 7), transform * p));
+        }
     }
 }
