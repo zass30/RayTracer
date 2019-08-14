@@ -943,5 +943,16 @@ namespace RayTracerTestProject
             Assert.IsTrue(areEqual(point(-Sqrt(2) / 2, Sqrt(2) / 2, 0), half_quarter * p));
             Assert.IsTrue(areEqual(point(-1, 0, 0), full_quarter * p));
         }
+
+        [TestMethod]
+        public void Fluent()
+        {
+            var transform = identity().rotate_x(PI / 2).scale(5, 5, 5).translate(10, 5, 7);
+            var r = identity();
+            r = rotation_x(PI / 2) * r;
+            r = scaling(5, 5, 5) * r;
+            r = translation(10, 5, 7) * r;
+            Assert.IsTrue(areEqual(r, transform));
+        }
     }
 }

@@ -173,7 +173,7 @@ namespace RayTracer
 
         public Matrix translate(double x, double y, double z)
         {
-            return translation(x, y, z);
+            return translation(x, y, z) * this;
         }
 
         public static Matrix translation(double x, double y, double z)
@@ -187,7 +187,7 @@ namespace RayTracer
 
         public Matrix scale(double x, double y, double z)
         {
-            return scaling(x, y, z);
+            return scaling(x, y, z) * this;
         }
 
         public static Matrix scaling(double x, double y, double z)
@@ -201,7 +201,7 @@ namespace RayTracer
 
         public Matrix rotate_x(double rad)
         {
-            return rotation_x(rad);
+            return rotation_x(rad) * this;
         }
 
         public static Matrix rotation_x(double rad)
@@ -216,7 +216,7 @@ namespace RayTracer
 
         public Matrix rotate_y(double rad)
         {
-            return rotation_y(rad);
+            return rotation_y(rad) * this;
         }
 
         public static Matrix rotation_y(double rad)
@@ -231,7 +231,7 @@ namespace RayTracer
 
         public Matrix rotate_z(double rad)
         {
-            return rotation_z(rad);
+            return rotation_z(rad) * this;
         }
 
         public static Matrix rotation_z(double rad)
