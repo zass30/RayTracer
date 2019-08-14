@@ -947,11 +947,14 @@ namespace RayTracerTestProject
         [TestMethod]
         public void Fluent()
         {
-            var transform = identity().rotate_x(PI / 2).scale(5, 5, 5).translate(10, 5, 7);
+            var transform = identity().rotate_x(PI / 2).rotate_y(PI / 2).rotate_z(PI / 2).scale(5, 5, 5).translate(10, 5, 7).shear(1, 2, 3, 4, 5, 6);
             var r = identity();
             r = rotation_x(PI / 2) * r;
+            r = rotation_y(PI / 2) * r;
+            r = rotation_z(PI / 2) * r;
             r = scaling(5, 5, 5) * r;
             r = translation(10, 5, 7) * r;
+            r = shearing(1, 2, 3, 4, 5, 6) * r;
             Assert.IsTrue(areEqual(r, transform));
         }
 

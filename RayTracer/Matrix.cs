@@ -244,6 +244,11 @@ namespace RayTracer
             return r;
         }
 
+        public Matrix shear(double xy, double xz, double yx, double yz, double zx, double zy)
+        {
+            return shearing(xy, xz, yx, yz, zx, zy) * this;
+        }
+
         public static Matrix shearing(double xy, double xz, double yx, double yz, double zx, double zy)
         {
             Matrix r = identity();
