@@ -980,5 +980,26 @@ namespace RayTracerTestProject
             transform = shearing(0, 0, 0, 0, 0, 1);
             Assert.IsTrue(areEqual(point(2, 3, 7), transform * p));
         }
+
+        [TestMethod]
+        public void TransformationSequenceAndChained()
+        {
+            var p = point(1, 0, 1);
+            var A = rotation_x(PI / 2);
+            var B = scaling(5, 5, 5);
+            var C = translation(10, 5, 7);
+
+            var p2 = A * p;
+            Assert.IsTrue(areEqual(point(1, -1, 0), p2));
+
+            var p3 = B * p2;
+            Assert.IsTrue(areEqual(point(5, -5, 0), p3));
+
+            var p4 = C * p3;
+            Assert.IsTrue(areEqual(point(15, 0, 7), p4));
+
+            var T = C * B * A;
+            Assert.IsTrue(areEqual(point(15, 0, 7), T * p));
+        }
     }
 }
