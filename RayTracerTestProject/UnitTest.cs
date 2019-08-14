@@ -6,6 +6,7 @@ using static RayTracer.Tuple;
 using static RayTracer.Canvas;
 using static RayTracer.Color;
 using static RayTracer.Matrix;
+using static RayTracer.Ray;
 using System.Threading.Tasks;
 using Windows.Storage;
 using System.Text;
@@ -453,15 +454,12 @@ namespace RayTracerTestProject
             {
                 proj = TestHelper.tick(proj, env);
                 write_to_canvas(proj.position, c);
-                //s.AppendLine("x: " + proj.position.X + "\ty: " + proj.position.Y + "\t t: " + i);
                 i++;
             }
 
-            write_pixel(c, 0, 0, color(1, 0.4, 0.7));
             StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
             StorageFile sampleFile = await storageFolder.CreateFileAsync("chapter2.ppm", CreationCollisionOption.ReplaceExisting);
             await FileIO.WriteTextAsync(sampleFile, canvas_to_ppm(c));
-
 
             void write_to_canvas(RayTracer.Tuple position, RayTracer.Canvas canvas)
             {
@@ -488,9 +486,6 @@ namespace RayTracerTestProject
                 write_pixel(c, x_coord, y_coord, red);
             }
         }
-
-
-
     }
 
     [TestClass]
@@ -921,7 +916,7 @@ namespace RayTracerTestProject
             var p = point(0, 1, 0);
             var half_quarter = rotation_x(PI / 4);
             var inv = inverse(half_quarter);
-                Assert.IsTrue(areEqual(point(0, Sqrt(2) / 2, -Sqrt(2) / 2), inv * p));
+            Assert.IsTrue(areEqual(point(0, Sqrt(2) / 2, -Sqrt(2) / 2), inv * p));
         }
 
         [TestMethod]
@@ -1000,6 +995,80 @@ namespace RayTracerTestProject
 
             var T = C * B * A;
             Assert.IsTrue(areEqual(point(15, 0, 7), T * p));
+        }
+
+        [TestMethod]
+        public async Task Chapter4Project()
+        {
+            RayTracer.Color blue = color(0, 0.5, 1);
+
+            var c = new RayTracer.Canvas(100, 100);
+
+            var p = point(0, 0.8, 0);
+            var T = identity();
+
+            for (int i = 0; i < 12; i++)
+            {
+                write_to_canvas(T * p, c, blue);
+                T = T.rotate_z(-PI / 6);
+            }
+
+            StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
+            StorageFile sampleFile = await storageFolder.CreateFileAsync("chapter4.ppm", CreationCollisionOption.ReplaceExisting);
+            await FileIO.WriteTextAsync(sampleFile, canvas_to_ppm(c));
+
+            void write_to_canvas(RayTracer.Tuple position, RayTracer.Canvas canvas, RayTracer.Color color)
+            {
+                var canvas_point = point(0, 0, 0);
+                canvas_point = canvas_point + position; // make a copy of position
+                canvas_point.X *= canvas.width / 2;
+                canvas_point.Y *= canvas.height / 2;
+                canvas_point = canvas_point + point(canvas.width / 2, canvas.height / 2, 0);
+
+                int x_coord = (int)Math.Round(canvas_point.X);
+                int y_coord = canvas.height - (int)Math.Round(canvas_point.Y);
+
+                if (x_coord >= canvas.width)
+                {
+                    x_coord = canvas.width - 1;
+                }
+                if (x_coord < 0)
+                {
+                    x_coord = 0;
+                }
+                if (y_coord >= canvas.height)
+                {
+                    y_coord = canvas.height - 1;
+                }
+                if (y_coord < 0)
+                {
+                    y_coord = 0;
+                }
+
+                write_pixel(c, x_coord, y_coord, color);
+            }
+        }
+    }
+
+    [TestClass]
+    public class Chapter5UnitTests
+    {
+        [TestMethod]
+        public void Ray()
+        {
+            var origin = point(1, 2, 3);
+            var direction = vector(4, 5, 6);
+            var r = ray(origin, direction);
+            Assert.IsTrue(areEqual(origin, r.origin));
+            Assert.IsTrue(areEqual(direction, r.direction));
+        }
+
+        [TestMethod]
+        public void Position()
+        {
+            var r = ray(point(2, 3, 4), vector(1, 0, 0));
+            Assert.IsTrue(areEqual(point(2, 3, 4), position(r, 0)));
+            Assert.IsTrue(areEqual(point(3, 3, 4), position(r, 1)));
         }
     }
 }
