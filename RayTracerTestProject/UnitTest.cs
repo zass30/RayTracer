@@ -1269,24 +1269,24 @@ namespace RayTracerTestProject
         {
             var red = color(1, 0, 0);
             var blue = color(0, 0, 1);
-            var c = new RayTracer.Canvas(201, 201);
+            var c = new RayTracer.Canvas(200, 200);
 
             var s = sphere();
 
-                Parallel.For(0, c.height * c.width, index =>
+            Parallel.For(0, c.height * c.width, index =>
+            {
+                int i = index * c.width / (c.height * c.width);
+                int j = index - i * c.width;
+                double scaled_x = -1 + 2 * i / (double)(c.width - 1);
+                double scaled_y = -1 + 2 * j / (double)(c.height - 1);
+                var r = ray(point(scaled_x, scaled_y, -5), vector(0, 0, 1));
+                var xs = intersect(s, r);
+                var h = hit(xs);
+                if (h != null)
                 {
-                    int i = index * c.width / (c.height * c.width);
-                    int j = index - i * c.width;
-                    double scaled_x = -1 + 2 * i / (double)(c.width - 1);
-                    double scaled_y = -1 + 2 * j / (double)(c.height - 1);
-                    var r = ray(point(scaled_x, scaled_y, -5), vector(0, 0, 1));
-                    var xs = intersect(s, r);
-                    var h = hit(xs);
-                    if (h != null)
-                    {
-                        TestHelper.write_to_canvas(point(scaled_x, scaled_y, 0), c, blue);
-                    }
-                });
+                    write_pixel(c, i, j, blue);
+                }
+            });
 
             await TestHelper.write_to_file("chapter5.ppm", canvas_to_ppm(c));
         }
