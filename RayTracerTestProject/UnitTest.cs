@@ -36,6 +36,13 @@ namespace RayTracerTestProject
             r.velocity = pr.velocity + en.gravity + en.wind;
             return r;
         }
+
+        public static async Task write_to_file(string filename, string contents)
+        {
+            StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
+            StorageFile sampleFile = await storageFolder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
+            await FileIO.WriteTextAsync(sampleFile, contents);
+        }
     }
 
     [TestClass]
@@ -230,8 +237,6 @@ namespace RayTracerTestProject
         [TestMethod]
         public async Task Chapter1Project()
         {
-            StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
-            StorageFile sampleFile = await storageFolder.CreateFileAsync("chapter1.txt", CreationCollisionOption.ReplaceExisting);
             var s = new StringBuilder();
 
             TestHelper.projectile proj;
@@ -249,7 +254,8 @@ namespace RayTracerTestProject
                 s.AppendLine("x: " + proj.position.X + "\ty: " + proj.position.Y + "\t t: " + i);
                 i++;
             }
-            await FileIO.WriteTextAsync(sampleFile, s.ToString());
+            await TestHelper.write_to_file("chapter1.txt", s.ToString());
+
             Assert.AreEqual(18, i);
 
         }
@@ -459,9 +465,7 @@ namespace RayTracerTestProject
                 i++;
             }
 
-            StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
-            StorageFile sampleFile = await storageFolder.CreateFileAsync("chapter2.ppm", CreationCollisionOption.ReplaceExisting);
-            await FileIO.WriteTextAsync(sampleFile, canvas_to_ppm(c));
+            await TestHelper.write_to_file("chapter2.ppm", canvas_to_ppm(c));
 
             void write_to_canvas(RayTracer.Tuple position, RayTracer.Canvas canvas)
             {
@@ -1015,9 +1019,7 @@ namespace RayTracerTestProject
                 T = T.rotate_z(-PI / 6);
             }
 
-            StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
-            StorageFile sampleFile = await storageFolder.CreateFileAsync("chapter4.ppm", CreationCollisionOption.ReplaceExisting);
-            await FileIO.WriteTextAsync(sampleFile, canvas_to_ppm(c));
+            await TestHelper.write_to_file("chapter4.ppm", canvas_to_ppm(c));
 
             void write_to_canvas(RayTracer.Tuple position, RayTracer.Canvas canvas, RayTracer.Color color)
             {
@@ -1228,6 +1230,15 @@ namespace RayTracerTestProject
             set_transforms(s, translation(5, 0, 0));
             xs = intersect(s, r);
             Assert.AreEqual(0, xs.Length);
+        }
+
+        [TestMethod]
+        public async Task Chapter5Project()
+        {
+            var red = color(1, 0, 0);
+            var c = new RayTracer.Canvas(100, 100);
+
+            await TestHelper.write_to_file("chapter5.ppm", canvas_to_ppm(c));
         }
     }
 }
