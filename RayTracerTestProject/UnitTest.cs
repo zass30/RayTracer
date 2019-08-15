@@ -1091,7 +1091,6 @@ namespace RayTracerTestProject
             Assert.AreEqual(6.0, xs[1]);
         }
 
-
         [TestMethod]
         public void RayAtTangent()
         {
@@ -1101,6 +1100,17 @@ namespace RayTracerTestProject
             Assert.AreEqual(2, xs.Length);
             Assert.AreEqual(5.0, xs[0]);
             Assert.AreEqual(5.0, xs[1]);
+        }
+
+        [TestMethod]
+        public void RayInsideSphere()
+        {
+            var r = ray(point(0, 0, 0), vector(0, 0, 1));
+            var s = sphere();
+            double[] xs = intersect(s, r);
+            Assert.AreEqual(2, xs.Length);
+            Assert.AreEqual(-1.0, xs[0]);
+            Assert.AreEqual(1.0, xs[1]);
         }
     }
 }
