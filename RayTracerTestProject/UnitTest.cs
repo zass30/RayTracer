@@ -8,6 +8,7 @@ using static RayTracer.Color;
 using static RayTracer.Matrix;
 using static RayTracer.Ray;
 using static RayTracer.Sphere;
+using static RayTracer.Intersection;
 using System.Threading.Tasks;
 using Windows.Storage;
 using System.Text;
@@ -1122,6 +1123,24 @@ namespace RayTracerTestProject
             Assert.AreEqual(2, xs.Length);
             Assert.AreEqual(-6.0, xs[0]);
             Assert.AreEqual(-4.0, xs[1]);
+        }
+
+        [TestMethod]
+        public void RayMissesSphere()
+        {
+            var r = ray(point(0, 5, 5), vector(0, 0, 1));
+            var s = sphere();
+            double[] xs = intersect(s, r);
+            Assert.AreEqual(0, xs.Length);
+        }
+
+        [TestMethod]
+        public void Intersection()
+        {
+            var s = sphere();
+            var i = intersection(3.5, s);
+            Assert.AreEqual(3.5, i.t);
+            Assert.AreEqual(s.GetHashCode(), i.obj.GetHashCode());
         }
     }
 }

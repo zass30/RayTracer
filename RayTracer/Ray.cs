@@ -49,12 +49,34 @@ namespace RayTracer
             c = Tuple.dot(r.origin, r.origin) - 2; // more operations using dot, but more compact form. Maybe memoize in the future?
             b = 2 * Tuple.dot(r.origin, r.direction);
             a = Tuple.dot(r.direction, r.direction);
-            double root = Math.Sqrt(b * b - 4 * a * c) / (2 * a);
+
+            double discriminant = b * b - 4 * a * c;
+            if (discriminant < 0)
+                return new double[0];
+
+            double root = Math.Sqrt(discriminant) / (2 * a);
             double first = -b / (2 * a);
             double [] result = new double[2];
             result[0] = first - root;
             result[1] = first + root;
             return result;
+        }
+    }
+
+    public struct Intersection
+    {
+        public double t;
+        public object obj;
+
+        public Intersection(double t, object obj)
+        {
+            this.t = t;
+            this.obj = obj;
+        }
+
+        public static Intersection intersection(double t, object obj)
+        {
+            return new Intersection(t, obj);
         }
     }
 }
