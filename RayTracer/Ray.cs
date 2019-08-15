@@ -38,13 +38,21 @@ namespace RayTracer
 
     public class Sphere
     {
+        public Matrix transform { get; set; }
         public Sphere()
         {
+            transform = Matrix.identity();
         }
 
         public static Sphere sphere()
         {
             return new Sphere();
+        }
+        
+        public static void set_transforms(Sphere s, Matrix t)
+        {
+            s.transform = t;
+            return;
         }
 
         public static Intersection[] intersect(Sphere s, Ray r)

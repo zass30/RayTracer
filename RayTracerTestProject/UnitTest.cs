@@ -1187,7 +1187,6 @@ namespace RayTracerTestProject
             Assert.AreEqual(i4, i);
         }
 
-
         [TestMethod]
         public void TransformRay()
         {
@@ -1202,6 +1201,16 @@ namespace RayTracerTestProject
             r2 = transform(r, m);
             Assert.IsTrue(areEqual(point(2, 6, 12), r2.origin));
             Assert.IsTrue(areEqual(vector(0, 3, 0), r2.direction));
+        }
+        [TestMethod]
+        public void TransformSphere()
+        {
+            var s = sphere();
+            Assert.IsTrue(areEqual(identity(), s.transform));
+
+            var t = translation(2, 3, 4);
+            set_transforms(s, t);
+            Assert.IsTrue(areEqual(t, s.transform));
         }
     }
 }
