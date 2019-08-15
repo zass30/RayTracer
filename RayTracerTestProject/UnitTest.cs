@@ -1086,10 +1086,11 @@ namespace RayTracerTestProject
         {
             var r = ray(point(0, 0, -5), vector(0, 0, 1));
             var s = sphere();
-            double[] xs = intersect(s, r);
+            RayTracer.Intersection[] xs = intersect(s, r);
             Assert.AreEqual(2, xs.Length);
-            Assert.AreEqual(4.0, xs[0]);
-            Assert.AreEqual(6.0, xs[1]);
+            Assert.AreEqual(4.0, xs[0].t);
+            Assert.AreEqual(6.0, xs[1].t);
+            Assert.AreEqual(s.GetHashCode(), xs[0].obj.GetHashCode());
         }
 
         [TestMethod]
@@ -1097,10 +1098,10 @@ namespace RayTracerTestProject
         {
             var r = ray(point(0, 1, -5), vector(0, 0, 1));
             var s = sphere();
-            double[] xs = intersect(s, r);
+            RayTracer.Intersection[] xs = intersect(s, r);
             Assert.AreEqual(2, xs.Length);
-            Assert.AreEqual(5.0, xs[0]);
-            Assert.AreEqual(5.0, xs[1]);
+            Assert.AreEqual(5.0, xs[0].t);
+            Assert.AreEqual(5.0, xs[1].t);
         }
 
         [TestMethod]
@@ -1108,10 +1109,10 @@ namespace RayTracerTestProject
         {
             var r = ray(point(0, 0, 0), vector(0, 0, 1));
             var s = sphere();
-            double[] xs = intersect(s, r);
+            RayTracer.Intersection[] xs = intersect(s, r);
             Assert.AreEqual(2, xs.Length);
-            Assert.AreEqual(-1.0, xs[0]);
-            Assert.AreEqual(1.0, xs[1]);
+            Assert.AreEqual(-1.0, xs[0].t);
+            Assert.AreEqual(1.0, xs[1].t);
         }
 
         [TestMethod]
@@ -1119,10 +1120,10 @@ namespace RayTracerTestProject
         {
             var r = ray(point(0, 0, 5), vector(0, 0, 1));
             var s = sphere();
-            double[] xs = intersect(s, r);
+            RayTracer.Intersection[] xs = intersect(s, r);
             Assert.AreEqual(2, xs.Length);
-            Assert.AreEqual(-6.0, xs[0]);
-            Assert.AreEqual(-4.0, xs[1]);
+            Assert.AreEqual(-6.0, xs[0].t);
+            Assert.AreEqual(-4.0, xs[1].t);
         }
 
         [TestMethod]
@@ -1130,17 +1131,77 @@ namespace RayTracerTestProject
         {
             var r = ray(point(0, 5, 5), vector(0, 0, 1));
             var s = sphere();
-            double[] xs = intersect(s, r);
+            RayTracer.Intersection[] xs = intersect(s, r);
             Assert.AreEqual(0, xs.Length);
         }
 
         [TestMethod]
-        public void Intersection()
+        public void IntersectionTest()
         {
             var s = sphere();
             var i = intersection(3.5, s);
             Assert.AreEqual(3.5, i.t);
             Assert.AreEqual(s.GetHashCode(), i.obj.GetHashCode());
+        }
+
+        [TestMethod]
+        public void IntersectionsTest()
+        {
+            var s = sphere();
+            var i1 = intersection(1, s);
+            var i2 = intersection(2, s);
+            var xs = intersections(new RayTracer.Intersection[] { i1, i2 });
+            Assert.AreEqual(2, xs.Length);
+            Assert.AreEqual(1, xs[0].t);
+            Assert.AreEqual(2, xs[1].t);
+        }
+
+        [TestMethod]
+        public void IntersectionsByValue()
+        {
+            var s = sphere();
+            var i1 = intersection(1, s);
+            var i2 = intersection(2, s);
+            var xs = intersections(new RayTracer.Intersection[] { i1, i2 });
+            var i = hit(xs);
+            Assert.AreEqual(i1, i);
+
+            i1 = intersection(-1, s);
+            i2 = intersection(1, s);
+            xs = intersections(new RayTracer.Intersection[] { i1, i2 });
+            i = hit(xs);
+            Assert.AreEqual(i2, i);
+
+            i1 = intersection(-2, s);
+            i2 = intersection(-1, s);
+            xs = intersections(new RayTracer.Intersection[] { i1, i2 });
+            i = hit(xs);
+            Assert.AreEqual(null, i);
+
+            i1 = intersection(5, s);
+            i2 = intersection(7, s);
+            var i3 = intersection(-3, s);
+            var i4 = intersection(2, s);
+            xs = intersections(new RayTracer.Intersection[] { i1, i2, i3, i4 });
+            i = hit(xs);
+            Assert.AreEqual(i4, i);
+        }
+
+
+        [TestMethod]
+        public void TransformRay()
+        {
+            var r = ray(point(1, 2, 3), vector(0, 1, 0));
+            var m = translation(3, 4, 5);
+            var r2 = transform(r, m);
+            Assert.IsTrue(areEqual(point(4, 6, 8), r2.origin));
+            Assert.IsTrue(areEqual(vector(0, 1, 0), r2.direction));
+
+            r = ray(point(1, 2, 3), vector(0, 1, 0));
+            m = scaling(2, 3, 4);
+            r2 = transform(r, m);
+            Assert.IsTrue(areEqual(point(2, 6, 12), r2.origin));
+            Assert.IsTrue(areEqual(vector(0, 3, 0), r2.direction));
         }
     }
 }

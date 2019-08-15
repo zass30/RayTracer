@@ -26,6 +26,14 @@ namespace RayTracer
         {
             return r.origin + t * r.direction;
         }
+
+        public static Ray transform(Ray r, Matrix m)
+        {
+            Ray result;
+            result.origin = m * r.origin;
+            result.direction = m * r.direction;
+            return result;
+        }
     }
 
     public class Sphere
@@ -39,7 +47,7 @@ namespace RayTracer
             return new Sphere();
         }
 
-        public static double[] intersect(Sphere s, Ray r)
+        public static Intersection[] intersect(Sphere s, Ray r)
         {
             double a, b, c; 
 /*          c = r.origin.X * r.origin.X + r.origin.Y * r.origin.Y + r.origin.Z * r.origin.Z - 1;
@@ -52,13 +60,13 @@ namespace RayTracer
 
             double discriminant = b * b - 4 * a * c;
             if (discriminant < 0)
-                return new double[0];
+                return new Intersection[0];
 
             double root = Math.Sqrt(discriminant) / (2 * a);
             double first = -b / (2 * a);
-            double [] result = new double[2];
-            result[0] = first - root;
-            result[1] = first + root;
+            Intersection[] result = new Intersection[2];
+            result[0] = Intersection.intersection(first - root, s);
+            result[1] = Intersection.intersection(first + root, s);
             return result;
         }
     }
@@ -77,6 +85,34 @@ namespace RayTracer
         public static Intersection intersection(double t, object obj)
         {
             return new Intersection(t, obj);
+        }
+
+        public static Intersection[] intersections(Intersection[] args)
+        {
+            return args;
+        }
+
+        public static Intersection? hit(Intersection[] args)
+        {
+            double value = double.MaxValue;
+            int index = 0;
+            bool wasHitFound = false;
+            for (int i = 0; i < args.Length; i++)
+            {
+                if (args[i].t < 0)
+                    continue;
+                else if (args[i].t < value)
+                {
+                    wasHitFound = true;
+                    value = args[i].t;
+                    index = i;
+                }
+            }
+
+            if (wasHitFound)
+                return args[index];
+            else
+                return null;
         }
     }
 }
