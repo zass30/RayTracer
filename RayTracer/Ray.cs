@@ -42,9 +42,13 @@ namespace RayTracer
         public static double[] intersect(Sphere s, Ray r)
         {
             double a, b, c; 
-            c = r.origin.X * r.origin.X + r.origin.Y * r.origin.Y + r.origin.Z * r.origin.Z - 1;
+/*          c = r.origin.X * r.origin.X + r.origin.Y * r.origin.Y + r.origin.Z * r.origin.Z - 1;
             b = 2 * (r.origin.X * r.direction.X + r.origin.Y * r.direction.Y + r.origin.Z * r.direction.Z);
-            a = r.direction.X * r.direction.X + r.direction.Y * r.direction.Y + r.direction.Z * r.direction.Z;
+            a = r.direction.X * r.direction.X + r.direction.Y * r.direction.Y + r.direction.Z * r.direction.Z;*/
+
+            c = Tuple.dot(r.origin, r.origin) - 2; // more operations using dot, but more compact form. Maybe memoize in the future?
+            b = 2 * Tuple.dot(r.origin, r.direction);
+            a = Tuple.dot(r.direction, r.direction);
             double root = Math.Sqrt(b * b - 4 * a * c) / (2 * a);
             double first = -b / (2 * a);
             double [] result = new double[2];

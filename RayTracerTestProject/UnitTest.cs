@@ -1112,5 +1112,16 @@ namespace RayTracerTestProject
             Assert.AreEqual(-1.0, xs[0]);
             Assert.AreEqual(1.0, xs[1]);
         }
+
+        [TestMethod]
+        public void SphereBehindRay()
+        {
+            var r = ray(point(0, 0, 5), vector(0, 0, 1));
+            var s = sphere();
+            double[] xs = intersect(s, r);
+            Assert.AreEqual(2, xs.Length);
+            Assert.AreEqual(-6.0, xs[0]);
+            Assert.AreEqual(-4.0, xs[1]);
+        }
     }
 }
