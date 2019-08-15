@@ -43,6 +43,38 @@ namespace RayTracerTestProject
             StorageFile sampleFile = await storageFolder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
             await FileIO.WriteTextAsync(sampleFile, contents);
         }
+
+        // writes a position from -1 to 1 on the canvas
+        public static void write_to_canvas(RayTracer.Tuple position, RayTracer.Canvas canvas, RayTracer.Color color)
+        {
+            var canvas_point = point(0, 0, 0);
+            canvas_point = canvas_point + position; // make a copy of position
+            canvas_point.X *= canvas.width / 2;
+            canvas_point.Y *= canvas.height / 2;
+            canvas_point = canvas_point + point(canvas.width / 2, canvas.height / 2, 0);
+
+            int x_coord = (int)Math.Round(canvas_point.X);
+            int y_coord = canvas.height - (int)Math.Round(canvas_point.Y);
+
+            if (x_coord >= canvas.width)
+            {
+                x_coord = canvas.width - 1;
+            }
+            if (x_coord < 0)
+            {
+                x_coord = 0;
+            }
+            if (y_coord >= canvas.height)
+            {
+                y_coord = canvas.height - 1;
+            }
+            if (y_coord < 0)
+            {
+                y_coord = 0;
+            }
+
+            write_pixel(canvas, x_coord, y_coord, color);
+        }
     }
 
     [TestClass]
@@ -461,13 +493,13 @@ namespace RayTracerTestProject
             while (proj.position.Y > 0)
             {
                 proj = TestHelper.tick(proj, env);
-                write_to_canvas(proj.position, c);
+                write_to_canvasCh2(proj.position, c);
                 i++;
             }
 
             await TestHelper.write_to_file("chapter2.ppm", canvas_to_ppm(c));
 
-            void write_to_canvas(RayTracer.Tuple position, RayTracer.Canvas canvas)
+            void write_to_canvasCh2(RayTracer.Tuple position, RayTracer.Canvas canvas)
             {
                 int x_coord = (int)Math.Round(position.X);
                 int y_coord = canvas.height - (int)Math.Round(position.Y);
@@ -1015,12 +1047,12 @@ namespace RayTracerTestProject
 
             for (int i = 0; i < 12; i++)
             {
-                write_to_canvas(T * p, c, blue);
+                TestHelper.write_to_canvas(T * p, c, blue);
                 T = T.rotate_z(-PI / 6);
             }
 
             await TestHelper.write_to_file("chapter4.ppm", canvas_to_ppm(c));
-
+            /*
             void write_to_canvas(RayTracer.Tuple position, RayTracer.Canvas canvas, RayTracer.Color color)
             {
                 var canvas_point = point(0, 0, 0);
@@ -1050,7 +1082,7 @@ namespace RayTracerTestProject
                 }
 
                 write_pixel(c, x_coord, y_coord, color);
-            }
+            }*/
         }
     }
 
@@ -1236,7 +1268,25 @@ namespace RayTracerTestProject
         public async Task Chapter5Project()
         {
             var red = color(1, 0, 0);
-            var c = new RayTracer.Canvas(100, 100);
+            var blue = color(0, 0, 1);
+            var c = new RayTracer.Canvas(201, 201);
+
+            var s = sphere();
+
+                Parallel.For(0, c.height * c.width, index =>
+                {
+                    int i = index * c.width / (c.height * c.width);
+                    int j = index - i * c.width;
+                    double scaled_x = -1 + 2 * i / (double)(c.width - 1);
+                    double scaled_y = -1 + 2 * j / (double)(c.height - 1);
+                    var r = ray(point(scaled_x, scaled_y, -5), vector(0, 0, 1));
+                    var xs = intersect(s, r);
+                    var h = hit(xs);
+                    if (h != null)
+                    {
+                        TestHelper.write_to_canvas(point(scaled_x, scaled_y, 0), c, blue);
+                    }
+                });
 
             await TestHelper.write_to_file("chapter5.ppm", canvas_to_ppm(c));
         }
