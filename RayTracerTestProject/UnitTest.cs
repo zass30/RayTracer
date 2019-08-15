@@ -1224,6 +1224,10 @@ namespace RayTracerTestProject
             Assert.AreEqual(2, xs.Length);
             Assert.AreEqual(3, xs[0].t);
             Assert.AreEqual(7, xs[1].t);
+
+            set_transforms(s, translation(5, 0, 0));
+            xs = intersect(s, r);
+            Assert.AreEqual(0, xs.Length);
         }
     }
 }
