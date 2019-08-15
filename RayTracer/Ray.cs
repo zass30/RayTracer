@@ -55,8 +55,10 @@ namespace RayTracer
             return;
         }
 
-        public static Intersection[] intersect(Sphere s, Ray r)
+        public static Intersection[] intersect(Sphere s, Ray ray)
         {
+            Ray r = Ray.transform(ray, Matrix.inverse(s.transform));
+
             double a, b, c; 
 /*          c = r.origin.X * r.origin.X + r.origin.Y * r.origin.Y + r.origin.Z * r.origin.Z - 1;
             b = 2 * (r.origin.X * r.direction.X + r.origin.Y * r.direction.Y + r.origin.Z * r.direction.Z);
