@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static RayTracer.Tuple;
+using static RayTracer.Matrix;
 
 namespace RayTracer
 {
@@ -42,8 +44,8 @@ namespace RayTracer
         public Tuple center;
         public Sphere()
         {
-            transform = Matrix.identity();
-            center = Tuple.point(0, 0, 0);
+            transform = identity();
+            center = point(0, 0, 0);
         }
 
         public static Sphere sphere()
@@ -59,18 +61,18 @@ namespace RayTracer
 
         public static Intersection[] intersect(Sphere s, Ray ray)
         {
-            Ray r = Ray.transform(ray, Matrix.inverse(s.transform));
+            Ray r = Ray.transform(ray, inverse(s.transform));
 
             double a, b, c; 
-            c = Tuple.dot(r.origin, r.origin) - 2; // more operations using dot, but more compact form. Maybe memoize in the future?
-            b = 2 * Tuple.dot(r.origin, r.direction);
-            a = Tuple.dot(r.direction, r.direction);
+            c = dot(r.origin, r.origin) - 2; // more operations using dot, but more compact form. Maybe memoize in the future?
+            b = 2 * dot(r.origin, r.direction);
+            a = dot(r.direction, r.direction);
 
             double discriminant = b * b - 4 * a * c;
             if (discriminant < 0)
                 return new Intersection[0];
 
-            double root = Math.Sqrt(discriminant) / (2 * a);
+            double root = Sqrt(discriminant) / (2 * a);
             double first = -b / (2 * a);
             Intersection[] result = new Intersection[2];
             result[0] = Intersection.intersection(first - root, s);
@@ -80,11 +82,11 @@ namespace RayTracer
 
         public static Tuple normal_at(Sphere s, Tuple p)
         {
-            var object_point = Matrix.inverse(s.transform) * p;
+            var object_point = inverse(s.transform) * p;
             var object_normal = object_point - s.center;
-            var world_normal = Matrix.transpose(Matrix.inverse(s.transform)) * object_normal;
+            var world_normal = transpose(inverse(s.transform)) * object_normal;
             world_normal.W = 0;
-            return Tuple.normalize(world_normal);
+            return normalize(world_normal);
         }
     }
 
