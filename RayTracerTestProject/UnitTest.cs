@@ -1336,5 +1336,14 @@ namespace RayTracerTestProject
             n = normal_at(s, point(0, Sqrt(2)/2, -Sqrt(2)/2));
             Assert.IsTrue(areEqual(vector(0, 0.97014, -0.24254), n));
         }
+
+        [TestMethod]
+        public void Reflect()
+        {
+            var v = vector(1, -1, 0);
+            var n = vector(0, 1, 0);
+            var r = reflect(v, n);
+            Assert.IsTrue(areEqual(vector(1,1,0), r));
+        }
     }
 }

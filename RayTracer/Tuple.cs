@@ -135,5 +135,11 @@ namespace RayTracer
                 a.X * b.Y - a.Y * b.X
                 );
         }
+
+        public static Tuple reflect(Tuple v, Tuple n)
+        {
+            var a = v + n;
+            return n + a;
+        }
     }
 }
