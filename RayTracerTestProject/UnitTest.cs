@@ -1368,5 +1368,17 @@ namespace RayTracerTestProject
             Assert.AreEqual(0.9, m.specular);
             Assert.AreEqual(200, m.shininess);
         }
+
+        [TestMethod]
+        public void SphereMaterial()
+        {
+            var s = sphere();
+            var m = material();
+            Assert.IsTrue(areEqual(m, s.material));
+
+            m.ambient = 1;
+            s.material = m;
+            Assert.IsTrue(areEqual(m, s.material));
+        }
     }
 }

@@ -43,10 +43,13 @@ namespace RayTracer
     {
         public Matrix transform { get; set; }
         public Tuple center;
+        public Material material;
+
         public Sphere()
         {
             transform = identity();
             center = point(0, 0, 0);
+            material = Material.material();
         }
 
         public static Sphere sphere()
@@ -167,6 +170,15 @@ namespace RayTracer
             m.specular = 0.9;
             m.shininess = 200;
             return m;
+        }
+
+        public static bool areEqual(Material a, Material b)
+        {
+            return RayTracer.Tuple.areEqual(a.color, b.color) &&
+                a.ambient == b.ambient &&
+                a.diffuse == b.diffuse &&
+                a.specular == b.specular &&
+                a.shininess == b.shininess;
         }
     }
 }
