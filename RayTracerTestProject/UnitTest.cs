@@ -346,7 +346,7 @@ namespace RayTracerTestProject
         {
             var c = color(0.2, 0.3, 0.4);
             var r = color(0.4, 0.6, 0.8);
-            Assert.IsTrue(areEqual(r, c * 2));
+            Assert.IsTrue(areEqual(r, c * 2.0));
         }
 
         [TestMethod]
@@ -1379,6 +1379,66 @@ namespace RayTracerTestProject
             m.ambient = 1;
             s.material = m;
             Assert.IsTrue(areEqual(m, s.material));
+        }
+
+        [TestMethod]
+        public void Lighting1()
+        {
+            var m = material();
+            var position = point(0, 0, 0);
+            var eyev = vector(0, 0, -1);
+            var normalv = vector(0, 0, -1);
+            var light = point_light(point(0, 0, -10), color(1, 1, 1));
+            var result = lighting(m, light, position, eyev, normalv);
+            Assert.IsTrue(areEqual(color(1.9, 1.9, 1.9), result));
+        }
+
+        [TestMethod]
+        public void Lighting2()
+        {
+            var m = material();
+            var position = point(0, 0, 0);
+            var eyev = normalize(vector(0, 1, -1));
+            var normalv = vector(0, 0, -1);
+            var light = point_light(point(0, 0, -10), color(1, 1, 1));
+            var result = lighting(m, light, position, eyev, normalv);
+            Assert.IsTrue(areEqual(color(1, 1, 1), result));
+        }
+
+        [TestMethod]
+        public void Lighting3()
+        {
+            var m = material();
+            var position = point(0, 0, 0);
+            var eyev = vector(0, 0, -1);
+            var normalv = vector(0, 0, -1);
+            var light = point_light(point(0, 10, -10), color(1, 1, 1));
+            var result = lighting(m, light, position, eyev, normalv);
+            Assert.IsTrue(areEqual(color(0.7364, 0.7364, 0.7364), result));
+        }
+
+        [TestMethod]
+        public void Lighting4()
+        {
+            var m = material();
+            var position = point(0, 0, 0);
+            var eyev = normalize(vector(0, -1, -1));
+            var normalv = vector(0, 0, -1);
+            var light = point_light(point(0, 10, -10), color(1, 1, 1));
+            var result = lighting(m, light, position, eyev, normalv);
+            Assert.IsTrue(areEqual(color(1.6364, 1.6364, 1.6364), result));
+        }
+
+        [TestMethod]
+        public void Lighting5()
+        {
+            var m = material();
+            var position = point(0, 0, 0);
+            var eyev = vector(0, 0, -1);
+            var normalv = vector(0, 0, -1);
+            var light = point_light(point(0, 0, 10), color(1, 1, 1));
+            var result = lighting(m, light, position, eyev, normalv);
+            Assert.IsTrue(areEqual(color(0.1, 0.1, 0.1), result));
         }
     }
 }

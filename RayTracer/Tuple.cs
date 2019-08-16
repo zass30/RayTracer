@@ -138,8 +138,9 @@ namespace RayTracer
 
         public static Tuple reflect(Tuple v, Tuple n)
         {
-            var a = v + n;
-            return n + a;
+            // var a = v + n;
+            // return n + a; TODO: why doesn't this work?
+            return v - n * 2 * dot(v, n);
         }
     }
 }

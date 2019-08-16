@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using static System.Math;
 using static RayTracer.Tuple;
 using static RayTracer.Matrix;
+using static RayTracer.Color;
 
 namespace RayTracer
 {
@@ -151,6 +152,36 @@ namespace RayTracer
             light.position = position;
             return light;
         }
+
+        public static Color lighting(Material material, Light light, Tuple point, Tuple eyev, Tuple normalv)
+        {
+            var black = color(0, 0, 0);
+            var effective_color = material.color * light.intensity;
+            var lightv = normalize(light.position - point);
+            Color ambient = effective_color * material.ambient;
+            Color diffuse, specular;
+
+            var light_dot_normal = dot(lightv, normalv);
+            if (light_dot_normal < 0)
+            {
+                diffuse = black;
+                specular = black;
+            }
+            else
+            {
+                diffuse = effective_color * material.diffuse * light_dot_normal;
+                var reflectv = reflect(-1 * lightv, normalv);
+                var reflect_dot_eye = dot(reflectv, eyev);
+                if (reflect_dot_eye <= 0)
+                    specular = black;
+                else
+                {
+                    var factor = Math.Pow(reflect_dot_eye, material.shininess);
+                    specular = light.intensity * material.specular * factor;
+                }
+            }
+            return ambient + diffuse + specular;
+        }
     }
 
     public struct Material
@@ -174,7 +205,7 @@ namespace RayTracer
 
         public static bool areEqual(Material a, Material b)
         {
-            return RayTracer.Tuple.areEqual(a.color, b.color) &&
+            return Tuple.areEqual(a.color, b.color) &&
                 a.ambient == b.ambient &&
                 a.diffuse == b.diffuse &&
                 a.specular == b.specular &&
