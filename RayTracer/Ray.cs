@@ -39,9 +39,11 @@ namespace RayTracer
     public class Sphere
     {
         public Matrix transform { get; set; }
+        public Tuple center;
         public Sphere()
         {
             transform = Matrix.identity();
+            center = Tuple.point(0, 0, 0);
         }
 
         public static Sphere sphere()
@@ -78,6 +80,11 @@ namespace RayTracer
             result[0] = Intersection.intersection(first - root, s);
             result[1] = Intersection.intersection(first + root, s);
             return result;
+        }
+
+        public static Tuple normal_at(Sphere s, Tuple p)
+        {
+            return Tuple.normalize(p - s.center);
         }
     }
 

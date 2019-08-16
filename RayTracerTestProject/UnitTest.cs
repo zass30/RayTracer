@@ -1269,7 +1269,7 @@ namespace RayTracerTestProject
         {
             var red = color(1, 0, 0);
             var blue = color(0, 0, 1);
-            var c = new RayTracer.Canvas(200, 200);
+            var c = new RayTracer.Canvas(100, 100);
 
             var s = sphere();
 
@@ -1289,6 +1289,38 @@ namespace RayTracerTestProject
             });
 
             await TestHelper.write_to_file("chapter5.ppm", canvas_to_ppm(c));
+        }
+    }
+
+    [TestClass]
+    public class Chapter6UnitTests
+    {
+        [TestMethod]
+        public void Normal()
+        {
+            var s = sphere();
+            var n = normal_at(s, point(1, 0, 0));
+            Assert.IsTrue(areEqual(vector(1, 0, 0), n));
+
+            n = normal_at(s, point(0, 1, 0));
+            Assert.IsTrue(areEqual(vector(0, 1, 0), n));
+
+            n = normal_at(s, point(0, 0, 1));
+            Assert.IsTrue(areEqual(vector(0, 0, 1), n));
+
+            n = normal_at(s, point(0, 0, 1));
+            Assert.IsTrue(areEqual(vector(0, 0, 1), n));
+
+            n = normal_at(s, point(Sqrt(3) / 3, Sqrt(3) / 3, Sqrt(3) / 3));
+            Assert.IsTrue(areEqual(vector(Sqrt(3) / 3, Sqrt(3) / 3, Sqrt(3) / 3), n));
+        }
+
+        [TestMethod]
+        public void NormalizedNormal()
+        {
+            var s = sphere();
+            var n = normal_at(s, point(Sqrt(3) / 3, Sqrt(3) / 3, Sqrt(3) / 3));
+            Assert.IsTrue(areEqual(normalize(n), n));
         }
     }
 }
