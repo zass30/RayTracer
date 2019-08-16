@@ -1284,7 +1284,7 @@ namespace RayTracerTestProject
                 var h = hit(xs);
                 if (h != null)
                 {
-                    write_pixel(c, i, j, blue);
+                    write_pixel(c, i, c.height - j, blue);
                 }
             });
 
