@@ -9,6 +9,7 @@ using static RayTracer.Matrix;
 using static RayTracer.Ray;
 using static RayTracer.Sphere;
 using static RayTracer.Intersection;
+using static RayTracer.Light;
 using System.Threading.Tasks;
 using Windows.Storage;
 using System.Text;
@@ -1344,6 +1345,16 @@ namespace RayTracerTestProject
             var n = vector(0, 1, 0);
             var r = reflect(v, n);
             Assert.IsTrue(areEqual(vector(1,1,0), r));
+        }
+
+        [TestMethod]
+        public void PointLight()
+        {
+            var intensity = color(1, 1, 1);
+            var position = point(0, 0, 0);
+            var light = point_light(position, intensity);
+            Assert.IsTrue(areEqual(position, light.position));
+            Assert.IsTrue(areEqual(intensity, light.intensity));
         }
     }
 }

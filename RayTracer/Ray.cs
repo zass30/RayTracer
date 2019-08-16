@@ -135,4 +135,18 @@ namespace RayTracer
                 return null;
         }
     }
+
+    public struct Light
+    {
+        public Color intensity;
+        public Tuple position;
+
+        public static Light point_light(Tuple position, Color intensity)
+        {
+            Light light;
+            light.intensity = intensity;
+            light.position = position;
+            return light;
+        }
+    }
 }
