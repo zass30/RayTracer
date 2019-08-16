@@ -149,4 +149,24 @@ namespace RayTracer
             return light;
         }
     }
+
+    public struct Material
+    {
+        public Color color;
+        public double ambient;
+        public double diffuse;
+        public double specular;
+        public double shininess;
+
+        public static Material material()
+        {
+            Material m;
+            m.color = new Color(1, 1, 1);
+            m.ambient = 0.1;
+            m.diffuse = 0.9;
+            m.specular = 0.9;
+            m.shininess = 200;
+            return m;
+        }
+    }
 }

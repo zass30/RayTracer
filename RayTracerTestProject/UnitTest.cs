@@ -10,6 +10,7 @@ using static RayTracer.Ray;
 using static RayTracer.Sphere;
 using static RayTracer.Intersection;
 using static RayTracer.Light;
+using static RayTracer.Material;
 using System.Threading.Tasks;
 using Windows.Storage;
 using System.Text;
@@ -1355,6 +1356,17 @@ namespace RayTracerTestProject
             var light = point_light(position, intensity);
             Assert.IsTrue(areEqual(position, light.position));
             Assert.IsTrue(areEqual(intensity, light.intensity));
+        }
+
+        [TestMethod]
+        public void Material()
+        {
+            var m = material();
+            Assert.IsTrue(areEqual(color(1, 1, 1), m.color));
+            Assert.AreEqual(0.1, m.ambient);
+            Assert.AreEqual(0.9, m.diffuse);
+            Assert.AreEqual(0.9, m.specular);
+            Assert.AreEqual(200, m.shininess);
         }
     }
 }
