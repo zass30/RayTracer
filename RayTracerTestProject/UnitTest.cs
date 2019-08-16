@@ -6,7 +6,7 @@ using static RayTracer.Tuple;
 using static RayTracer.Canvas;
 using static RayTracer.Color;
 using static RayTracer.Matrix;
-using static RayTracer.Ray;
+using static RayTracer.WorldObjects;
 using static RayTracer.Sphere;
 using static RayTracer.Intersection;
 using static RayTracer.Light;

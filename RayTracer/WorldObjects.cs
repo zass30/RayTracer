@@ -9,30 +9,30 @@ using static RayTracer.Matrix;
 
 namespace RayTracer
 {
-    public struct Ray
+    public struct WorldObjects
     {
         public Tuple origin;
         public Tuple direction;
 
-        public Ray(Tuple origin, Tuple direction)
+        public WorldObjects(Tuple origin, Tuple direction)
         {
             this.origin = origin;
             this.direction = direction;
         }
 
-        public static Ray ray(Tuple origin, Tuple direction)
+        public static WorldObjects ray(Tuple origin, Tuple direction)
         {
-            return new Ray(origin, direction);
+            return new WorldObjects(origin, direction);
         }
 
-        public static Tuple position(Ray r, double t)
+        public static Tuple position(WorldObjects r, double t)
         {
             return r.origin + t * r.direction;
         }
 
-        public static Ray transform(Ray r, Matrix m)
+        public static WorldObjects transform(WorldObjects r, Matrix m)
         {
-            Ray result;
+            WorldObjects result;
             result.origin = m * r.origin;
             result.direction = m * r.direction;
             return result;
@@ -60,9 +60,9 @@ namespace RayTracer
             return;
         }
 
-        public static Intersection[] intersect(Sphere s, Ray ray)
+        public static Intersection[] intersect(Sphere s, WorldObjects ray)
         {
-            Ray r = Ray.transform(ray, inverse(s.transform));
+            WorldObjects r = WorldObjects.transform(ray, inverse(s.transform));
 
             double a, b, c; 
             c = dot(r.origin, r.origin) - 2; // more operations using dot, but more compact form. Maybe memoize in the future?
