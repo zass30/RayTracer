@@ -51,7 +51,7 @@ namespace RayTracer
             return new Sphere();
         }
         
-        public static void set_transforms(Sphere s, Matrix t)
+        public static void set_transform(Sphere s, Matrix t)
         {
             s.transform = t;
             return;
@@ -62,10 +62,6 @@ namespace RayTracer
             Ray r = Ray.transform(ray, Matrix.inverse(s.transform));
 
             double a, b, c; 
-/*          c = r.origin.X * r.origin.X + r.origin.Y * r.origin.Y + r.origin.Z * r.origin.Z - 1;
-            b = 2 * (r.origin.X * r.direction.X + r.origin.Y * r.direction.Y + r.origin.Z * r.direction.Z);
-            a = r.direction.X * r.direction.X + r.direction.Y * r.direction.Y + r.direction.Z * r.direction.Z;*/
-
             c = Tuple.dot(r.origin, r.origin) - 2; // more operations using dot, but more compact form. Maybe memoize in the future?
             b = 2 * Tuple.dot(r.origin, r.direction);
             a = Tuple.dot(r.direction, r.direction);
@@ -84,7 +80,11 @@ namespace RayTracer
 
         public static Tuple normal_at(Sphere s, Tuple p)
         {
-            return Tuple.normalize(p - s.center);
+            var object_point = Matrix.inverse(s.transform) * p;
+            var object_normal = object_point - s.center;
+            var world_normal = Matrix.transpose(Matrix.inverse(s.transform)) * object_normal;
+            world_normal.W = 0;
+            return Tuple.normalize(world_normal);
         }
     }
 
