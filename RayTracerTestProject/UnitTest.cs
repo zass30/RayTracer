@@ -6,7 +6,7 @@ using static RayTracer.Tuple;
 using static RayTracer.Canvas;
 using static RayTracer.Color;
 using static RayTracer.Matrix;
-using static RayTracer.WorldObjects;
+using static RayTracer.Ray;
 using static RayTracer.Sphere;
 using static RayTracer.Intersection;
 using static RayTracer.Light;
@@ -1504,6 +1504,19 @@ namespace RayTracerTestProject
 
             var w = default_world();
             Assert.IsTrue(RayTracer.Light.areEqual(light, w.light));
+        }
+
+        [TestMethod]
+        public void IntersectWorld()
+        {
+            var w = default_world();
+            var r = ray(point(0, 0, -5), vector(0, 0, 1));
+            var xs = intersect_world(w, r);
+            Assert.AreEqual(4, xs.Count);
+            Assert.AreEqual(4, xs[0].t);
+            Assert.AreEqual(4.5, xs[1].t);
+            Assert.AreEqual(5.5, xs[2].t);
+            Assert.AreEqual(6, xs[3].t);
         }
     }
 }

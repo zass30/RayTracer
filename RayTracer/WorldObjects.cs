@@ -9,33 +9,34 @@ using static RayTracer.Matrix;
 using static RayTracer.Color;
 using static RayTracer.Sphere;
 using static RayTracer.Light;
+using System.Collections;
 
 namespace RayTracer
 {
-    public struct WorldObjects
+    public struct Ray
     {
         public Tuple origin;
         public Tuple direction;
 
-        public WorldObjects(Tuple origin, Tuple direction)
+        public Ray(Tuple origin, Tuple direction)
         {
             this.origin = origin;
             this.direction = direction;
         }
 
-        public static WorldObjects ray(Tuple origin, Tuple direction)
+        public static Ray ray(Tuple origin, Tuple direction)
         {
-            return new WorldObjects(origin, direction);
+            return new Ray(origin, direction);
         }
 
-        public static Tuple position(WorldObjects r, double t)
+        public static Tuple position(Ray r, double t)
         {
             return r.origin + t * r.direction;
         }
 
-        public static WorldObjects transform(WorldObjects r, Matrix m)
+        public static Ray transform(Ray r, Matrix m)
         {
-            WorldObjects result;
+            Ray result;
             result.origin = m * r.origin;
             result.direction = m * r.direction;
             return result;
@@ -66,9 +67,9 @@ namespace RayTracer
             return;
         }
 
-        public static Intersection[] intersect(Sphere s, WorldObjects ray)
+        public static Intersection[] intersect(Sphere s, Ray ray)
         {
-            WorldObjects r = WorldObjects.transform(ray, inverse(s.transform));
+            Ray r = Ray.transform(ray, inverse(s.transform));
 
             double a, b, c;
             c = dot(r.origin, r.origin) - 2; // more operations using dot, but more compact form. Maybe memoize in the future?
@@ -249,6 +250,17 @@ namespace RayTracer
 
             w.light = point_light(point(-10, 10, -10), color(1, 1, 1));
             return w;
+        }
+        public static List<Intersection> intersect_world(World w, Ray r)
+        {
+            List<Intersection> results = new List<Intersection>();
+            foreach (Sphere s in w.objects)
+            {
+                var xs = intersect(s, r);
+                results.AddRange(xs);
+            }
+            results.Sort((x, y) => x.t.CompareTo(y.t));
+            return results;
         }
     }
 }
