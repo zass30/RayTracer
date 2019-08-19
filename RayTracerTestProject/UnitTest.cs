@@ -15,6 +15,7 @@ using static RayTracer.World;
 using System.Threading.Tasks;
 using Windows.Storage;
 using System.Text;
+using System.Collections;
 
 namespace RayTracerTestProject
 {
@@ -1124,7 +1125,7 @@ namespace RayTracerTestProject
             var r = ray(point(0, 0, -5), vector(0, 0, 1));
             var s = sphere();
             var xs = intersect(s, r);
-            Assert.AreEqual(2, xs.Length);
+            Assert.AreEqual(2, xs.Count);
             Assert.AreEqual(4.0, xs[0].t);
             Assert.AreEqual(6.0, xs[1].t);
             Assert.AreEqual(s.GetHashCode(), xs[0].obj.GetHashCode());
@@ -1136,7 +1137,7 @@ namespace RayTracerTestProject
             var r = ray(point(0, 1, -5), vector(0, 0, 1));
             var s = sphere();
             var xs = intersect(s, r);
-            Assert.AreEqual(2, xs.Length);
+            Assert.AreEqual(2, xs.Count);
             Assert.AreEqual(5.0, xs[0].t);
             Assert.AreEqual(5.0, xs[1].t);
         }
@@ -1147,7 +1148,7 @@ namespace RayTracerTestProject
             var r = ray(point(0, 0, 0), vector(0, 0, 1));
             var s = sphere();
             var xs = intersect(s, r);
-            Assert.AreEqual(2, xs.Length);
+            Assert.AreEqual(2, xs.Count);
             Assert.AreEqual(-1.0, xs[0].t);
             Assert.AreEqual(1.0, xs[1].t);
         }
@@ -1158,7 +1159,7 @@ namespace RayTracerTestProject
             var r = ray(point(0, 0, 5), vector(0, 0, 1));
             var s = sphere();
             var xs = intersect(s, r);
-            Assert.AreEqual(2, xs.Length);
+            Assert.AreEqual(2, xs.Count);
             Assert.AreEqual(-6.0, xs[0].t);
             Assert.AreEqual(-4.0, xs[1].t);
         }
@@ -1169,7 +1170,7 @@ namespace RayTracerTestProject
             var r = ray(point(0, 5, 5), vector(0, 0, 1));
             var s = sphere();
             var xs = intersect(s, r);
-            Assert.AreEqual(0, xs.Length);
+            Assert.AreEqual(0, xs.Count);
         }
 
         [TestMethod]
@@ -1187,8 +1188,8 @@ namespace RayTracerTestProject
             var s = sphere();
             var i1 = intersection(1, s);
             var i2 = intersection(2, s);
-            var xs = intersections(new RayTracer.Intersection[] { i1, i2 });
-            Assert.AreEqual(2, xs.Length);
+            var xs = intersections(new System.Collections.Generic.List<RayTracer.Intersection> { i1, i2 });
+            Assert.AreEqual(2, xs.Count);
             Assert.AreEqual(1, xs[0].t);
             Assert.AreEqual(2, xs[1].t);
         }
@@ -1199,19 +1200,19 @@ namespace RayTracerTestProject
             var s = sphere();
             var i1 = intersection(1, s);
             var i2 = intersection(2, s);
-            var xs = intersections(new RayTracer.Intersection[] { i1, i2 });
+            var xs = intersections(new System.Collections.Generic.List<RayTracer.Intersection> { i1, i2 });
             var i = hit(xs);
             Assert.AreEqual(i1, i);
 
             i1 = intersection(-1, s);
             i2 = intersection(1, s);
-            xs = intersections(new RayTracer.Intersection[] { i1, i2 });
+            xs = intersections(new System.Collections.Generic.List<RayTracer.Intersection> { i1, i2 });
             i = hit(xs);
             Assert.AreEqual(i2, i);
 
             i1 = intersection(-2, s);
             i2 = intersection(-1, s);
-            xs = intersections(new RayTracer.Intersection[] { i1, i2 });
+            xs = intersections(new System.Collections.Generic.List<RayTracer.Intersection> { i1, i2 });
             i = hit(xs);
             Assert.AreEqual(null, i);
 
@@ -1219,7 +1220,7 @@ namespace RayTracerTestProject
             i2 = intersection(7, s);
             var i3 = intersection(-3, s);
             var i4 = intersection(2, s);
-            xs = intersections(new RayTracer.Intersection[] { i1, i2, i3, i4 });
+            xs = intersections(new System.Collections.Generic.List<RayTracer.Intersection> { i1, i2, i3, i4 });
             i = hit(xs);
             Assert.AreEqual(i4, i);
         }
@@ -1258,13 +1259,13 @@ namespace RayTracerTestProject
             var s = sphere();
             set_transform(s, scaling(2, 2, 2));
             var xs = intersect(s, r);
-            Assert.AreEqual(2, xs.Length);
+            Assert.AreEqual(2, xs.Count);
             Assert.AreEqual(3, xs[0].t);
             Assert.AreEqual(7, xs[1].t);
 
             set_transform(s, translation(5, 0, 0));
             xs = intersect(s, r);
-            Assert.AreEqual(0, xs.Length);
+            Assert.AreEqual(0, xs.Count);
         }
 
         [TestMethod]

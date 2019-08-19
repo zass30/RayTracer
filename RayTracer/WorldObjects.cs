@@ -67,7 +67,7 @@ namespace RayTracer
             return;
         }
 
-        public static Intersection[] intersect(Sphere s, Ray ray)
+        public static List<Intersection> intersect(Sphere s, Ray ray)
         {
             Ray r = Ray.transform(ray, inverse(s.transform));
 
@@ -78,13 +78,13 @@ namespace RayTracer
 
             double discriminant = b * b - 4 * a * c;
             if (discriminant < 0)
-                return new Intersection[0];
+                return new List<Intersection>();
 
             double root = Sqrt(discriminant) / (2 * a);
             double first = -b / (2 * a);
-            Intersection[] result = new Intersection[2];
-            result[0] = Intersection.intersection(first - root, s);
-            result[1] = Intersection.intersection(first + root, s);
+            List<Intersection> result = new List<Intersection>(2);
+            result.Add(Intersection.intersection(first - root, s));
+            result.Add(Intersection.intersection(first + root, s));
             return result;
         }
 
@@ -114,17 +114,17 @@ namespace RayTracer
             return new Intersection(t, obj);
         }
 
-        public static Intersection[] intersections(Intersection[] args)
+        public static List<Intersection> intersections(List<Intersection> args)
         {
             return args;
         }
 
-        public static Intersection? hit(Intersection[] args)
+        public static Intersection? hit(List<Intersection> args)
         {
             double value = double.MaxValue;
             int index = 0;
             bool wasHitFound = false;
-            for (int i = 0; i < args.Length; i++)
+            for (int i = 0; i < args.Count; i++)
             {
                 if (args[i].t < 0)
                     continue;
