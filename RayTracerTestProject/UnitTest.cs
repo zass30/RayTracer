@@ -1440,5 +1440,41 @@ namespace RayTracerTestProject
             var result = lighting(m, light, position, eyev, normalv);
             Assert.IsTrue(areEqual(color(0.1, 0.1, 0.1), result));
         }
+
+        [TestMethod]
+        public async Task Chapter6Project()
+        {
+            var red = color(1, 0, 0);
+            var c = new RayTracer.Canvas(100, 100);
+
+            var s = sphere();
+            var eye = point(0, 0, -5);
+            var light = point_light(point(-0.7, 0.6, -3), color(1, 1, 1));
+            s.material.color = color(0.8, 0.1, 0.6);
+
+            double dx = 7.0 / c.width;
+            double dy = 7.0 / c.height;
+            Parallel.For(0, c.height * c.width, index =>
+            {
+                int i = index * c.width / (c.height * c.width);
+                int j = index - i * c.width;
+                var wall_point = point(-3.5 + i * dx, -3.5 + j * dy, 10);
+                var r = ray(eye, wall_point - eye);
+                var xs = intersect(s, r);
+                var h = hit(xs);
+                if (h != null)
+                {
+                    RayTracer.Intersection foo = (RayTracer.Intersection)h;
+                    var intersect_position = position(r, foo.t);
+                    var n = normal_at(s, intersect_position);
+                    var light_result = lighting(s.material, light,
+                        intersect_position, normalize(r.direction), n);
+                    light_result.clamp();
+
+                    write_pixel(c, i, c.height - j, light_result);
+                }
+            });
+            await TestHelper.write_to_file("chapter6.ppm", canvas_to_ppm(c));
+        }
     }
 }
