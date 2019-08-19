@@ -11,6 +11,7 @@ using static RayTracer.Sphere;
 using static RayTracer.Intersection;
 using static RayTracer.Light;
 using static RayTracer.Material;
+using static RayTracer.World;
 using System.Threading.Tasks;
 using Windows.Storage;
 using System.Text;
@@ -1475,6 +1476,34 @@ namespace RayTracerTestProject
                 }
             });
             await TestHelper.write_to_file("chapter6.ppm", canvas_to_ppm(c));
+        }
+    }
+
+    [TestClass]
+    public class Chapter7UnitTests
+    {
+        [TestMethod]
+        public void World()
+        {
+            var w = world();
+            Assert.IsNull(w.light.intensity);
+            Assert.IsNull(w.light.position);
+            Assert.AreEqual(0, w.objects.Length);
+        }
+
+        [TestMethod]
+        public void DefaultWorld()
+        {
+            var light = point_light(point(-10, 10, -10), color(1, 1, 1));
+            var s1 = sphere();
+            s1.material.color = color(0.8, 1.0, 0.6);
+            s1.material.diffuse = 0.7;
+            s1.material.specular = 0.2;
+            var s2 = sphere();
+            s2.transform = scaling(0.5, 0.5, 0.5);
+
+            var w = default_world();
+            Assert.IsTrue(RayTracer.Light.areEqual(light, w.light));
         }
     }
 }

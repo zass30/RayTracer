@@ -7,6 +7,8 @@ using static System.Math;
 using static RayTracer.Tuple;
 using static RayTracer.Matrix;
 using static RayTracer.Color;
+using static RayTracer.Sphere;
+using static RayTracer.Light;
 
 namespace RayTracer
 {
@@ -57,7 +59,7 @@ namespace RayTracer
         {
             return new Sphere();
         }
-        
+
         public static void set_transform(Sphere s, Matrix t)
         {
             s.transform = t;
@@ -68,7 +70,7 @@ namespace RayTracer
         {
             WorldObjects r = WorldObjects.transform(ray, inverse(s.transform));
 
-            double a, b, c; 
+            double a, b, c;
             c = dot(r.origin, r.origin) - 2; // more operations using dot, but more compact form. Maybe memoize in the future?
             b = 2 * dot(r.origin, r.direction);
             a = dot(r.direction, r.direction);
@@ -153,6 +155,11 @@ namespace RayTracer
             return light;
         }
 
+        public static bool areEqual(Light a, Light b)
+        {
+            return RayTracer.Color.areEqual(a.intensity, b.intensity) && RayTracer.Tuple.areEqual(a.position, b.position);
+        }
+
         public static Color lighting(Material material, Light light, Tuple point, Tuple eyev, Tuple normalv)
         {
             var black = color(0, 0, 0);
@@ -210,6 +217,38 @@ namespace RayTracer
                 a.diffuse == b.diffuse &&
                 a.specular == b.specular &&
                 a.shininess == b.shininess;
+        }
+    }
+
+    public struct World
+    {
+        public Sphere[] objects;
+        public Light light;
+
+        public static World world()
+        {
+            World w;
+            w.objects = new Sphere[0];
+            w.light = new Light();
+            return w;
+        }
+
+        public static World default_world()
+        {
+            World w;
+            var s1 = sphere();
+            s1.material.color = color(0.8, 1.0, 0.6);
+            s1.material.diffuse = 0.7;
+            s1.material.specular = 0.2;
+            var s2 = sphere();
+            s2.transform = scaling(0.5, 0.5, 0.5);
+
+            w.objects = new Sphere[2];
+            w.objects[0] = s1;
+            w.objects[1] = s2;
+
+            w.light = point_light(point(-10, 10, -10), color(1, 1, 1));
+            return w;
         }
     }
 }
