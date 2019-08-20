@@ -9,6 +9,7 @@ using static RayTracer.Matrix;
 using static RayTracer.Color;
 using static RayTracer.Sphere;
 using static RayTracer.Light;
+using static RayTracer.Ray;
 using System.Collections;
 
 namespace RayTracer
@@ -101,15 +102,15 @@ namespace RayTracer
     public struct Intersection
     {
         public double t;
-        public object obj;
+        public Sphere obj;
 
-        public Intersection(double t, object obj)
+        public Intersection(double t, Sphere obj)
         {
             this.t = t;
             this.obj = obj;
         }
 
-        public static Intersection intersection(double t, object obj)
+        public static Intersection intersection(double t, Sphere obj)
         {
             return new Intersection(t, obj);
         }
@@ -228,15 +229,13 @@ namespace RayTracer
 
         public static World world()
         {
-            World w;
-            w.objects = new Sphere[0];
-            w.light = new Light();
+            World w = new World();
             return w;
         }
 
         public static World default_world()
         {
-            World w;
+            World w = new World();
             var s1 = sphere();
             s1.material.color = color(0.8, 1.0, 0.6);
             s1.material.diffuse = 0.7;
@@ -261,6 +260,26 @@ namespace RayTracer
             }
             results.Sort((x, y) => x.t.CompareTo(y.t));
             return results;
+        }
+    }
+
+    public struct Computations
+    {
+        public double t;
+        public Sphere obj;
+        public Tuple point;
+        public Tuple eyev;
+        public Tuple normalv;
+
+        public static Computations prepare_computations(Intersection intersection, Ray ray)
+        {
+            Computations comps = new Computations();
+            comps.t = intersection.t;
+            comps.obj = intersection.obj;
+            comps.point = position(ray, comps.t);
+            comps.eyev = -1 * ray.direction;
+            comps.normalv = normal_at(comps.obj, comps.point);
+            return comps;
         }
     }
 }

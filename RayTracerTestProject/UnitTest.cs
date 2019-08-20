@@ -12,6 +12,7 @@ using static RayTracer.Intersection;
 using static RayTracer.Light;
 using static RayTracer.Material;
 using static RayTracer.World;
+using static RayTracer.Computations;
 using System.Threading.Tasks;
 using Windows.Storage;
 using System.Text;
@@ -1489,7 +1490,7 @@ namespace RayTracerTestProject
             var w = world();
             Assert.IsNull(w.light.intensity);
             Assert.IsNull(w.light.position);
-            Assert.AreEqual(0, w.objects.Length);
+            Assert.IsNull(w.objects);
         }
 
         [TestMethod]
@@ -1518,6 +1519,20 @@ namespace RayTracerTestProject
             Assert.AreEqual(4.5, xs[1].t);
             Assert.AreEqual(5.5, xs[2].t);
             Assert.AreEqual(6, xs[3].t);
+        }
+
+        [TestMethod]
+        public void PrecomputeIntersection()
+        {
+            var r = ray(point(0, 0, -5), vector(0, 0, 1));
+            var shape = sphere();
+            var i = intersection(4, shape);
+            var comps = prepare_computations(i, r);
+            Assert.AreEqual(i.t, comps.t);
+            Assert.AreEqual(i.obj, comps.obj);
+            Assert.IsTrue(areEqual(point(0, 0, -1), comps.point));
+            Assert.IsTrue(areEqual(vector(0, 0, -1), comps.eyev));
+            Assert.IsTrue(areEqual(vector(0, 0, -1), comps.normalv));
         }
     }
 }
