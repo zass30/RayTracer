@@ -270,6 +270,7 @@ namespace RayTracer
         public Tuple point;
         public Tuple eyev;
         public Tuple normalv;
+        public bool inside;
 
         public static Computations prepare_computations(Intersection intersection, Ray ray)
         {
@@ -279,6 +280,14 @@ namespace RayTracer
             comps.point = position(ray, comps.t);
             comps.eyev = -1 * ray.direction;
             comps.normalv = normal_at(comps.obj, comps.point);
+
+            if (dot(comps.eyev, comps.normalv) < 0)
+            {
+                comps.inside = true;
+                comps.normalv *= -1;
+            }
+            else
+                comps.inside = false;
             return comps;
         }
     }

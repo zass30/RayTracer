@@ -1534,5 +1534,24 @@ namespace RayTracerTestProject
             Assert.IsTrue(areEqual(vector(0, 0, -1), comps.eyev));
             Assert.IsTrue(areEqual(vector(0, 0, -1), comps.normalv));
         }
+
+        [TestMethod]
+        public void IntersectionInsideAndOutside()
+        {
+            var r = ray(point(0, 0, -5), vector(0, 0, 1));
+            var shape = sphere();
+            var i = intersection(4, shape);
+            var comps = prepare_computations(i, r);
+            Assert.IsFalse(comps.inside);
+
+            r = ray(point(0, 0, 0), vector(0, 0, 1));
+            shape = sphere();
+            i = intersection(1, shape);
+            comps = prepare_computations(i, r);
+            Assert.IsTrue(areEqual(point(0, 0, 1), comps.point));
+            Assert.IsTrue(areEqual(vector(0, 0, -1), comps.eyev));
+            Assert.IsTrue(comps.inside);
+            Assert.IsTrue(areEqual(vector(0, 0, -1), comps.normalv));
+        }
     }
 }
