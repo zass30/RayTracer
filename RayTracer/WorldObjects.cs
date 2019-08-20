@@ -290,5 +290,10 @@ namespace RayTracer
                 comps.inside = false;
             return comps;
         }
+
+        public static Color shade_hit(World world, Computations computations)
+        {
+            return lighting(computations.obj.material, world.light, computations.point, computations.eyev, computations.normalv);
+        }
     }
 }

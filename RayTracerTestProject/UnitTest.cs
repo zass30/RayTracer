@@ -1553,5 +1553,26 @@ namespace RayTracerTestProject
             Assert.IsTrue(comps.inside);
             Assert.IsTrue(areEqual(vector(0, 0, -1), comps.normalv));
         }
+
+        [TestMethod]
+        public void ShadeIntersection()
+        {
+            var w = default_world();
+            var r = ray(point(0, 0, -5), vector(0, 0, 1));
+            var shape = w.objects[0];
+            var i = intersection(4, shape);
+            var comps = prepare_computations(i, r);
+            var c = shade_hit(w, comps);
+            Assert.IsTrue(areEqual(color(0.38066, 0.47583, 0.2855), c));
+
+            w = default_world();
+            w.light = point_light(point(0, 0.25, 0), color(1, 1, 1));
+            r = ray(point(0, 0, 0), vector(0, 0, 1));
+            shape = w.objects[1];
+            i = intersection(0.5, shape);
+            comps = prepare_computations(i, r);
+            c = shade_hit(w, comps);
+            Assert.IsTrue(areEqual(color(0.90498, 0.90498, 0.90498), c));
+        }
     }
 }
