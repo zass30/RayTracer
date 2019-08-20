@@ -10,6 +10,9 @@ using static RayTracer.Color;
 using static RayTracer.Sphere;
 using static RayTracer.Light;
 using static RayTracer.Ray;
+using static RayTracer.World;
+using static RayTracer.Intersection;
+using static RayTracer.Computations;
 using System.Collections;
 
 namespace RayTracer
@@ -261,6 +264,23 @@ namespace RayTracer
             results.Sort((x, y) => x.t.CompareTo(y.t));
             return results;
         }
+
+        public static Color shade_hit(World world, Computations computations)
+        {
+            return lighting(computations.obj.material, world.light, computations.point, computations.eyev, computations.normalv);
+        }
+
+        public static Color color_at(World world, Ray ray)
+        {
+            var xs = intersect_world(world, ray);
+            var h = hit(xs);
+            if (h == null)
+                return color(0, 0, 0);
+            var comps = prepare_computations((RayTracer.Intersection)h, ray);
+           
+            var c = shade_hit(world, comps);
+            return c;
+        }
     }
 
     public struct Computations
@@ -289,11 +309,6 @@ namespace RayTracer
             else
                 comps.inside = false;
             return comps;
-        }
-
-        public static Color shade_hit(World world, Computations computations)
-        {
-            return lighting(computations.obj.material, world.light, computations.point, computations.eyev, computations.normalv);
         }
     }
 }

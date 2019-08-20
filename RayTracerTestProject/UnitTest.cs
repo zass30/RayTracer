@@ -1505,7 +1505,7 @@ namespace RayTracerTestProject
             s2.transform = scaling(0.5, 0.5, 0.5);
 
             var w = default_world();
-            Assert.IsTrue(RayTracer.Light.areEqual(light, w.light));
+            Assert.IsTrue(areEqual(light, w.light));
         }
 
         [TestMethod]
@@ -1573,6 +1573,37 @@ namespace RayTracerTestProject
             comps = prepare_computations(i, r);
             c = shade_hit(w, comps);
             Assert.IsTrue(areEqual(color(0.90498, 0.90498, 0.90498), c));
+        }
+
+        [TestMethod]
+        public void ColorAtMiss()
+        {
+            var w = default_world();
+            var r = ray(point(0, 0, -5), vector(0, 1, 0));
+            var c = color_at(w, r);
+            Assert.IsTrue(areEqual(color(0,0,0), c));
+        }
+
+        [TestMethod]
+        public void ColorAtHit()
+        {
+            var w = default_world();
+            var r = ray(point(0, 0, -5), vector(0, 0, 1));
+            var c = color_at(w, r);
+            Assert.IsTrue(areEqual(color(0.38066, 0.47583, 0.2855), c));
+        }
+
+        [TestMethod]
+        public void ColorBehindRay()
+        {
+            var w = default_world();
+            var outer = w.objects[0];
+            outer.material.ambient = 1;
+            var inner = w.objects[1];
+            inner.material.ambient = 1;
+            var r = ray(point(0, 0, 0.75), vector(0, 0, -1));
+            var c = color_at(w, r);
+            Assert.IsTrue(areEqual(inner.material.color, c));
         }
     }
 }
