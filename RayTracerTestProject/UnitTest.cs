@@ -1605,5 +1605,53 @@ namespace RayTracerTestProject
             var c = color_at(w, r);
             Assert.IsTrue(areEqual(inner.material.color, c));
         }
+
+        [TestMethod]
+        public void TransformDefault()
+        {
+            var from = point(0, 0, 0);
+            var to = point(0, 0, -1);
+            var up = vector(0, 1, 0);
+            var t = view_transform(from, to, up);
+            Assert.IsTrue(areEqual(identity(), t));
+        }
+
+        [TestMethod]
+        public void TransformPositiveZ()
+        {
+            var from = point(0, 0, 0);
+            var to = point(0, 0, 1);
+            var up = vector(0, 1, 0);
+            var t = view_transform(from, to, up);
+            Assert.IsTrue(areEqual(scaling(-1,1,-1), t));
+        }
+
+        [TestMethod]
+        public void TransformMovesWorld()
+        {
+            var from = point(0, 0, 8);
+            var to = point(0, 0, 0);
+            var up = vector(0, 1, 0);
+            var t = view_transform(from, to, up);
+            Assert.IsTrue(areEqual(translation(0, 0, -8), t));
+        }
+
+        [TestMethod]
+        public void ArbitraryTransform()
+        {
+            var from = point(1, 3, 2);
+            var to = point(4, -2, 8);
+            var up = vector(1, 1, 0);
+            var t = view_transform(from, to, up);
+
+            double[,] data = { {-0.50709, 0.50709, 0.67612, -2.36643},
+                               {0.76772, 0.60609, 0.12122, -2.82843},
+                               {-0.35857, 0.59761, -0.71714, 0.00000},
+                               {0.00000, 0.00000, 0.00000, 1.00000}
+                             };
+
+            var m = new RayTracer.Matrix(data);
+            Assert.IsTrue(areEqual(m, t));
+        }
     }
 }

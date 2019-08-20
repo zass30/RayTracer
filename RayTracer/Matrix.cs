@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static RayTracer.Tuple;
 
 namespace RayTracer
 {
@@ -259,6 +260,20 @@ namespace RayTracer
             r[2, 0] = zx;
             r[2, 1] = zy;
             return r;
+        }
+
+        public static Matrix view_transform(Tuple from, Tuple to, Tuple up)
+        {
+            var forward = normalize(to - from);
+            var left = cross(forward, normalize(up));
+            var true_up = cross(left, forward);
+            var data = new double[,] { {left.X, left.Y, left.Z, 0},
+                { true_up.X, true_up.Y, true_up.Z, 0 },
+                { -forward.X, -forward.Y, -forward.Z, 0},
+                { 0, 0, 0, 1}
+            };
+            var m = new Matrix(data);
+            return m * translation(-from.X, -from.Y, -from.Z) ;
         }
     }
 }
