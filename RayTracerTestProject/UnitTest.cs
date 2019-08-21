@@ -13,6 +13,7 @@ using static RayTracer.Light;
 using static RayTracer.Material;
 using static RayTracer.World;
 using static RayTracer.Computations;
+using static RayTracer.Camera;
 using System.Threading.Tasks;
 using Windows.Storage;
 using System.Text;
@@ -1581,7 +1582,7 @@ namespace RayTracerTestProject
             var w = default_world();
             var r = ray(point(0, 0, -5), vector(0, 1, 0));
             var c = color_at(w, r);
-            Assert.IsTrue(areEqual(color(0,0,0), c));
+            Assert.IsTrue(areEqual(color(0, 0, 0), c));
         }
 
         [TestMethod]
@@ -1623,7 +1624,7 @@ namespace RayTracerTestProject
             var to = point(0, 0, 1);
             var up = vector(0, 1, 0);
             var t = view_transform(from, to, up);
-            Assert.IsTrue(areEqual(scaling(-1,1,-1), t));
+            Assert.IsTrue(areEqual(scaling(-1, 1, -1), t));
         }
 
         [TestMethod]
@@ -1652,6 +1653,19 @@ namespace RayTracerTestProject
 
             var m = new RayTracer.Matrix(data);
             Assert.IsTrue(areEqual(m, t));
+        }
+
+        [TestMethod]
+        public void Camera()
+        {
+            int hsize = 160;
+            int vsize = 120;
+            double field_of_view = PI / 2;
+            var c = camera(hsize, vsize, field_of_view);
+            Assert.AreEqual(160, c.hsize);
+            Assert.AreEqual(120, c.vsize);
+            Assert.AreEqual(PI/2, c.field_of_view);
+            Assert.IsTrue(areEqual(identity(), c.transform));
         }
     }
 }

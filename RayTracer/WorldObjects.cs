@@ -33,16 +33,16 @@ namespace RayTracer
             return new Ray(origin, direction);
         }
 
-        public static Tuple position(Ray r, double t)
+        public static Tuple position(Ray ray, double t)
         {
-            return r.origin + t * r.direction;
+            return ray.origin + t * ray.direction;
         }
 
-        public static Ray transform(Ray r, Matrix m)
+        public static Ray transform(Ray ray, Matrix transform)
         {
             Ray result;
-            result.origin = m * r.origin;
-            result.direction = m * r.direction;
+            result.origin = transform * ray.origin;
+            result.direction = transform * ray.direction;
             return result;
         }
     }
@@ -65,15 +65,15 @@ namespace RayTracer
             return new Sphere();
         }
 
-        public static void set_transform(Sphere s, Matrix t)
+        public static void set_transform(Sphere sphere, Matrix transform)
         {
-            s.transform = t;
+            sphere.transform = transform;
             return;
         }
 
-        public static List<Intersection> intersect(Sphere s, Ray ray)
+        public static List<Intersection> intersect(Sphere sphere, Ray ray)
         {
-            Ray r = Ray.transform(ray, inverse(s.transform));
+            Ray r = Ray.transform(ray, inverse(sphere.transform));
 
             double a, b, c;
             c = dot(r.origin, r.origin) - 2; // more operations using dot, but more compact form. Maybe memoize in the future?
@@ -87,8 +87,8 @@ namespace RayTracer
             double root = Sqrt(discriminant) / (2 * a);
             double first = -b / (2 * a);
             List<Intersection> result = new List<Intersection>(2);
-            result.Add(Intersection.intersection(first - root, s));
-            result.Add(Intersection.intersection(first + root, s));
+            result.Add(Intersection.intersection(first - root, sphere));
+            result.Add(Intersection.intersection(first + root, sphere));
             return result;
         }
 
@@ -162,7 +162,7 @@ namespace RayTracer
 
         public static bool areEqual(Light a, Light b)
         {
-            return RayTracer.Color.areEqual(a.intensity, b.intensity) && RayTracer.Tuple.areEqual(a.position, b.position);
+            return Tuple.areEqual(a.intensity, b.intensity) && RayTracer.Tuple.areEqual(a.position, b.position);
         }
 
         public static Color lighting(Material material, Light light, Tuple point, Tuple eyev, Tuple normalv)
@@ -253,12 +253,12 @@ namespace RayTracer
             w.light = point_light(point(-10, 10, -10), color(1, 1, 1));
             return w;
         }
-        public static List<Intersection> intersect_world(World w, Ray r)
+        public static List<Intersection> intersect_world(World world, Ray ray)
         {
             List<Intersection> results = new List<Intersection>();
-            foreach (Sphere s in w.objects)
+            foreach (Sphere s in world.objects)
             {
-                var xs = intersect(s, r);
+                var xs = intersect(s, ray);
                 results.AddRange(xs);
             }
             results.Sort((x, y) => x.t.CompareTo(y.t));
@@ -277,7 +277,7 @@ namespace RayTracer
             if (h == null)
                 return color(0, 0, 0);
             var comps = prepare_computations((RayTracer.Intersection)h, ray);
-           
+
             var c = shade_hit(world, comps);
             return c;
         }
@@ -309,6 +309,24 @@ namespace RayTracer
             else
                 comps.inside = false;
             return comps;
+        }
+    }
+
+    public struct Camera
+    {
+        public int hsize;
+        public int vsize;
+        public double field_of_view;
+        public Matrix transform;
+
+        public static Camera camera(int hsize, int vsize, double field_of_view)
+        {
+            Camera c = new Camera();
+            c.hsize = hsize;
+            c.vsize = vsize;
+            c.field_of_view = field_of_view;
+            c.transform = identity();
+            return c;
         }
     }
 }
