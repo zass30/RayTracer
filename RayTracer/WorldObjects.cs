@@ -92,11 +92,11 @@ namespace RayTracer
             return result;
         }
 
-        public static Tuple normal_at(Sphere s, Tuple p)
+        public static Tuple normal_at(Sphere sphere, Tuple point)
         {
-            var object_point = inverse(s.transform) * p;
-            var object_normal = object_point - s.center;
-            var world_normal = transpose(inverse(s.transform)) * object_normal;
+            var object_point = inverse(sphere.transform) * point;
+            var object_normal = object_point - sphere.center;
+            var world_normal = transpose(inverse(sphere.transform)) * object_normal;
             world_normal.W = 0;
             return normalize(world_normal);
         }
@@ -276,7 +276,7 @@ namespace RayTracer
             var h = hit(xs);
             if (h == null)
                 return color(0, 0, 0);
-            var comps = prepare_computations((RayTracer.Intersection)h, ray);
+            var comps = prepare_computations((Intersection)h, ray);
 
             var c = shade_hit(world, comps);
             return c;

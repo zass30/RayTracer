@@ -43,27 +43,27 @@ namespace RayTracer
             _paintCanvas(color);
         }
 
-        public static Color pixel_at(Canvas c, int x, int y)
+        public static Color pixel_at(Canvas canvas, int x, int y)
         {
-            return c.pixels[x,y];
+            return canvas.pixels[x,y];
         }
 
-        public static void write_pixel(Canvas c, int x, int y, Color color)
+        public static void write_pixel(Canvas canvas, int x, int y, Color color)
         {
-            c.pixels[x, y] = color;
+            canvas.pixels[x, y] = color;
         }
 
-        public static string canvas_to_ppm(Canvas c)
+        public static string canvas_to_ppm(Canvas canvas)
         {
             var s = new StringBuilder();
             s.Append("P3\n");
-            s.Append(c.width + " " + c.height + "\n255\n");
-            for (int j = 0; j < c.height; j++)
+            s.Append(canvas.width + " " + canvas.height + "\n255\n");
+            for (int j = 0; j < canvas.height; j++)
             {
                 int l = 0; // length for 70 count
-                for (int i = 0; i < c.width; i++)
+                for (int i = 0; i < canvas.width; i++)
                 {
-                    var color = c.pixels[i, j];
+                    var color = canvas.pixels[i, j];
                     appendcolor(s, ref l, color.rI.ToString());
                     appendcolor(s, ref l, color.gI.ToString());
                     appendcolor(s, ref l, color.bI.ToString());

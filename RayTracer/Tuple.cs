@@ -136,9 +136,9 @@ namespace RayTracer
                 );
         }
 
-        public static Tuple reflect(Tuple v, Tuple n)
+        public static Tuple reflect(Tuple vector, Tuple normal)
         {
-            return v - n * 2 * dot(v, n);
+            return vector - normal * 2 * dot(vector, normal);
         }
     }
 }
