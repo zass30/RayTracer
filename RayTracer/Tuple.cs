@@ -76,7 +76,7 @@ namespace RayTracer
             return false;
         }
 
-        private static bool areClose(double a, double b)
+        public static bool areClose(double a, double b)
         {
             if (Math.Abs(a - b) < epsilon)
                 return true;

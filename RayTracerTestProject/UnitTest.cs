@@ -1667,5 +1667,15 @@ namespace RayTracerTestProject
             Assert.AreEqual(PI/2, c.field_of_view);
             Assert.IsTrue(areEqual(identity(), c.transform));
         }
+
+        [TestMethod]
+        public void PixelSize()
+        {
+            var c = camera(200, 125, PI/2);
+            Assert.IsTrue(areClose(0.01, c.pixel_size));
+
+            c = camera(125, 200, PI / 2);
+            Assert.IsTrue(areClose(0.01, c.pixel_size));
+        }
     }
 }

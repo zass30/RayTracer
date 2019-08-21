@@ -318,6 +318,26 @@ namespace RayTracer
         public int vsize;
         public double field_of_view;
         public Matrix transform;
+        public double pixel_size
+        {
+            get
+            {
+                double half_view = Tan(field_of_view / 2);
+                double aspect = hsize * 1.0 / vsize;
+                double half_width, half_height;
+                if (aspect > 1)
+                {
+                    half_width = half_view;
+                    half_height = half_view / aspect;
+                }
+                else
+                {
+                    half_width = half_view * aspect;
+                    half_height = half_view;
+                }
+                return half_width * 2 / hsize;
+            }
+        }
 
         public static Camera camera(int hsize, int vsize, double field_of_view)
         {
