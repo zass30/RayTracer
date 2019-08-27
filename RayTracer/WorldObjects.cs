@@ -318,27 +318,18 @@ namespace RayTracer
         public int vsize;
         public double field_of_view;
         public Matrix transform;
+//        private double half_width;
+//        private double half_height;
+        public double pixel_size;
+        /*
         public double pixel_size
         {
             get
             {
-                double half_view = Tan(field_of_view / 2);
-                double aspect = hsize * 1.0 / vsize;
-                double half_width, half_height;
-                if (aspect > 1)
-                {
-                    half_width = half_view;
-                    half_height = half_view / aspect;
-                }
-                else
-                {
-                    half_width = half_view * aspect;
-                    half_height = half_view;
-                }
                 return half_width * 2 / hsize;
             }
         }
-
+*/
         public static Camera camera(int hsize, int vsize, double field_of_view)
         {
             Camera c = new Camera();
@@ -346,7 +337,48 @@ namespace RayTracer
             c.vsize = vsize;
             c.field_of_view = field_of_view;
             c.transform = identity();
+
+            if (hsize > vsize)
+            {
+                double len = 2 * Tan(field_of_view / 2);
+                c.pixel_size = len / hsize;
+            }
+            else
+            {
+                double len = 2 * Tan(field_of_view / 2);
+                c.pixel_size = len / vsize;
+            }
+
             return c;
+
+            /*            c.hsize = hsize;
+                        c.vsize = vsize;
+                        c.field_of_view = field_of_view;
+                        c.transform = identity();
+
+                        double half_view = Tan(field_of_view / 2);
+                        double aspect = hsize * 1.0 / vsize;
+                        if (aspect > 1)
+                        {
+                            c.half_width = half_view;
+                            c.half_height = half_view / aspect;
+                        }
+                        else
+                        {
+                            c.half_width = half_view * aspect;
+                            c.half_height = half_view;
+                        }*/
+           // return c;
+        }
+
+        public static Ray ray_for_pixel(Camera camera, int x, int y)
+        {
+            var origin = point(0, 0, 0);
+            var direction = vector(0, 0, -1);
+            direction.Y = x - camera.hsize/2 ;
+            direction.Y = y - camera.vsize / 2;
+            var r = ray(point(0, 0, 0), camera.transform * direction);
+            return r;
         }
     }
 }

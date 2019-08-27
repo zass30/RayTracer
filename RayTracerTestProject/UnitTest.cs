@@ -1676,6 +1676,28 @@ namespace RayTracerTestProject
 
             c = camera(125, 200, PI / 2);
             Assert.IsTrue(areClose(0.01, c.pixel_size));
+
+            c = camera(2, 2, PI / 2);
+            Assert.IsTrue(areClose(1, c.pixel_size));
+
+            c = camera(20, 2, PI / 2);
+            Assert.IsTrue(areClose(0.1, c.pixel_size));
+
+            c = camera(2, 20, PI / 2);
+            Assert.IsTrue(areClose(0.1, c.pixel_size));
+        }
+
+        [TestMethod]
+        public void RayForPixel()
+        {
+            var c = camera(201, 101, PI / 2);
+            var r = ray_for_pixel(c, 100, 50);
+            Assert.IsTrue(areEqual(point(0, 0, 0), r.origin));
+            Assert.IsTrue(areEqual(vector(0, 0, -1), r.direction));
+
+            r = ray_for_pixel(c, 0, 0);
+            Assert.IsTrue(areEqual(point(0, 0, 0), r.origin));
+//            Assert.IsTrue(areEqual(vector(0.66519, 0.33259, -0.66851), r.direction));
         }
     }
 }
